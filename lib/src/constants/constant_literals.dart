@@ -8,7 +8,7 @@ String word1 = "Health";
 String word2 = "hero";
 Duration kSpeed = const Duration(milliseconds: 1000);
 
-Duration kdisplayTime = const Duration(milliseconds: 600);
+Duration kdisplayTime = const Duration(milliseconds: 850);
 
 //TextSTyle
 TextStyle textStyleLarge() => GoogleFonts.ubuntu(
