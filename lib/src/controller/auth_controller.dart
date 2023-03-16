@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:healthhero/src/constants/global.dart';
-import 'package:healthhero/src/screen/home/home_main.dart';
+import 'package:healthhero/src/screen/pages/home_main.dart';
 
 class AuthController extends GetxController {
   late GoogleSignIn googleSignIn;

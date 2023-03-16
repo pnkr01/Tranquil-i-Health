@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../constants/global.dart';
 import '../screen/auth/authentication_page.dart';
-import '../screen/home/home_main.dart';
+import '../screen/pages/home_main.dart';
 
 class HandleOnBoardingController extends GetxController {
   @override
