@@ -12,6 +12,8 @@ class FirebaseClass {
       'photourl': photurl,
       'email': email,
       'uid': uid,
+      'like': 0,
+      'post': 0,
     }).then((value) => LocalStorage.storeUserProfile(name, photurl, email));
   }
 }

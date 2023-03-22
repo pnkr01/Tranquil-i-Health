@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:healthhero/src/constants/global.dart';
 import 'package:healthhero/src/screen/pages/profile/controller/profile_controller.dart';
 import 'package:healthhero/src/theme/app_color.dart';
 import 'package:ionicons/ionicons.dart';
-import '../../../utils/hel_app_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileScreen extends GetView<ProfileController> {
@@ -15,7 +15,11 @@ class ProfileScreen extends GetView<ProfileController> {
       length: 3,
       child: Scaffold(
         backgroundColor: whiteColor,
-        appBar: HelAppBar(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          backgroundColor: whiteColor,
+          centerTitle: true,
           title: Text(
             'Profile',
             style: kBodyTextTitleStyle(),
@@ -30,7 +34,7 @@ class ProfileScreen extends GetView<ProfileController> {
                 Align(
                   child: CircleAvatar(
                     radius: 50.h, // Image radius
-                    backgroundImage: const NetworkImage(
+                    backgroundImage: NetworkImage(controller.user?.photoURL ??
                         'https://i.pinimg.com/564x/16/dd/1a/16dd1abb3f890a59e454149884a19a7c.jpg'),
                   ),
                 ),
@@ -51,11 +55,11 @@ class ProfileScreen extends GetView<ProfileController> {
                     children: [
                       _userInfo(),
                       const SizedBox(height: 20),
-                      _userActions(),
-                      const SizedBox(height: 20),
+                      //_userActions(),
+                      // const SizedBox(height: 20),
                       Obx(
                         () => SizedBox(
-                          height: 50,
+                          height: 48,
                           child: AppBar(
                             backgroundColor: whiteColor,
                             elevation: 0,
@@ -64,17 +68,18 @@ class ProfileScreen extends GetView<ProfileController> {
                               tabs: List.generate(
                                 3,
                                 (index) => Tab(
-                                  child: IconButton(
-                                    onPressed: () =>
-                                        controller.changeIdx(index),
-                                    icon: Icon(
-                                      controller.profilePages[index]["icon"],
-                                      color: index == controller.idx.value
-                                          ? primaryForegroundColor
-                                          : greyColor,
-                                    ),
+                                    child: GestureDetector(
+                                  onTap: () {
+                                    controller.changeIdx(index);
+                                    printMe(controller.idx.value, index);
+                                  },
+                                  child: Icon(
+                                    controller.profilePages[index]["icon"],
+                                    color: index == controller.idx.value
+                                        ? primaryForegroundColor
+                                        : greyColor,
                                   ),
-                                ),
+                                )),
                               ),
                             ),
                           ),
@@ -82,8 +87,9 @@ class ProfileScreen extends GetView<ProfileController> {
                       ),
                       SingleChildScrollView(
                         child: SizedBox(
-                          height: 300,
+                          height: 500,
                           child: TabBarView(
+                            physics: const ScrollPhysics(),
                             children: List.generate(
                               3,
                               (index) => controller.profilePages[index]["page"],
@@ -213,15 +219,45 @@ class ProfileScreen extends GetView<ProfileController> {
   }
 
   Row _userInfo() {
+    // printMe(postLengthRef.doc(controller.user?.email.toString()).get(), 'hint');
+    // FutureBuilder(
+    //     future: postLengthRef.get(),
+    //     builder: ((context, AsyncSnapshot<QuerySnapshot> snapshot) {
+    //       if (snapshot.hasData) {
+    //         printMe(snapshot.data, 'hint');
+    //         return const Text('data');
+    //       } else {
+    //         printMe(snapshot.data, 'hint');
+    //         return const Text('data');
+    //       }
+    //     }));
+    // StreamBuilder(
+    //     stream:
+    //         postLengthRef.doc(controller.user?.email.toString()).snapshots(),
+    //     builder: (context, AsyncSnapshot snapshot) =>
+    //         printMe(snapshot.data.docs, 'hint'));
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Column(
           children: [
-            Text(
-              '200',
-              style: kBodyTextTitleStyle(),
-            ),
+            // StreamBuilder(
+            //   stream: postLengthRef
+            //       .doc(controller.user?.email.toString())
+            //       .snapshots(),
+            //   builder: (context, AsyncSnapshot snapshot) => snapshot.hasData
+            //       ? Text(snapshot.data!.docs["post"].toString())
+            //       : const Text('0'),
+            // ),
+            FutureBuilder(
+                future: controller.getPostLength(),
+                builder: (context, snapshot) => snapshot.hasData
+                    ? Text(
+                        snapshot.data.toString(),
+                        style: kBodyTextTitleStyle(),
+                      )
+                    : Text('0', style: kBodyTextTitleStyle())),
+            //  Text(controller.getPostLength().toString()),
             const SizedBox(height: 10),
             const Text('Posts'),
           ],
@@ -233,10 +269,14 @@ class ProfileScreen extends GetView<ProfileController> {
         ),
         Column(
           children: [
-            Text(
-              '200',
-              style: kBodyTextTitleStyle(),
-            ),
+            FutureBuilder(
+                future: controller.getFollowersLength(),
+                builder: (context, snapshot) => snapshot.hasData
+                    ? Text(
+                        snapshot.data.toString(),
+                        style: kBodyTextTitleStyle(),
+                      )
+                    : Text('0', style: kBodyTextTitleStyle())),
             const SizedBox(height: 10),
             const Text('Followers'),
           ],
@@ -248,10 +288,14 @@ class ProfileScreen extends GetView<ProfileController> {
         ),
         Column(
           children: [
-            Text(
-              '200',
-              style: kBodyTextTitleStyle(),
-            ),
+            FutureBuilder(
+                future: controller.getFollowingLength(),
+                builder: (context, snapshot) => snapshot.hasData
+                    ? Text(
+                        snapshot.data.toString(),
+                        style: kBodyTextTitleStyle(),
+                      )
+                    : Text('0', style: kBodyTextTitleStyle())),
             const SizedBox(height: 10),
             const Text('Following'),
           ],
@@ -263,7 +307,14 @@ class ProfileScreen extends GetView<ProfileController> {
         ),
         Column(
           children: [
-            Text('200', style: kBodyTextTitleStyle()),
+            FutureBuilder(
+                future: controller.getTotalLikesLength(),
+                builder: (context, snapshot) => snapshot.hasData
+                    ? Text(
+                        snapshot.data.toString(),
+                        style: kBodyTextTitleStyle(),
+                      )
+                    : Text('0', style: kBodyTextTitleStyle())),
             const SizedBox(height: 10),
             const Text('Likes'),
           ],

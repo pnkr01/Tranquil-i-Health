@@ -2,6 +2,7 @@
 import 'package:animated_text/animated_text.dart';
 import 'package:flutter/material.dart';
 import 'package:healthhero/src/constants/constant_literals.dart';
+import 'package:healthhero/src/theme/app_color.dart';
 
 class HandleOnBoarding extends StatelessWidget {
   const HandleOnBoarding({super.key});
@@ -9,6 +10,7 @@ class HandleOnBoarding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: primaryColor,
       body: SafeArea(
         child: Column(
           children: [

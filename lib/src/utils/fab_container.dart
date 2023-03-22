@@ -1,7 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:healthhero/src/theme/app_color.dart';
+
+import '../screen/pages/createpost/create_post.dart';
 
 class AddIconContainer extends StatelessWidget {
   const AddIconContainer({
@@ -30,7 +33,7 @@ class AddIconContainer extends StatelessWidget {
       closedColor: Theme.of(context).scaffoldBackgroundColor,
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
         return FloatingActionButton(
-          backgroundColor: const Color.fromARGB(255, 168, 20, 237),
+          backgroundColor: lightGreenColor,
           onPressed: () {
             chooseUpload(context);
           },
@@ -38,6 +41,7 @@ class AddIconContainer extends StatelessWidget {
           child: Icon(
             icon,
             color: whiteColor,
+            size: 28,
           ),
         );
       },
@@ -60,14 +64,10 @@ class AddIconContainer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Center(
-                  child: Text(
-                    'Choose Upload',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
+                  child: Text('Choose Upload',
+                      textAlign: TextAlign.center,
+                      style: kBodyTextSubtitleStyle()
+                          .copyWith(color: primaryColor)),
                 ),
               ),
               const Divider(),
@@ -78,6 +78,7 @@ class AddIconContainer extends StatelessWidget {
                 ),
                 title: const Text('Make a post'),
                 onTap: () {
+                  Get.to(() => const CreatePost());
                   // Navigator.pop(context);
                   // Navigator.of(context).push(
                   //   CupertinoPageRoute(

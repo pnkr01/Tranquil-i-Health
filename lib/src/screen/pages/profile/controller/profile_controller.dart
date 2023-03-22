@@ -1,11 +1,47 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healthhero/src/constants/global.dart';
-import 'package:healthhero/src/screen/pages/profile/components/camer_view.dart';
-import 'package:healthhero/src/screen/pages/profile/components/fav_view.dart';
+import 'package:healthhero/src/screen/helper/firebase_helper.dart';
+import 'package:healthhero/src/screen/pages/profile/components/camera_view.dart';
+import 'package:healthhero/src/screen/pages/profile/components/favorite.dart';
 import 'package:healthhero/src/screen/pages/profile/components/grid_view.dart';
 
 class ProfileController extends GetxController {
+  User? user = firebaseAuth.currentUser;
+
+  Future getPostLength() async {
+    return usersRef.doc(user?.email.toString()).get().then((value) {
+      return value["post"];
+    });
+  }
+  Future getTotalLikesLength() async {
+    return usersRef.doc(user?.email.toString()).get().then((value) {
+      return value["like"];
+    });
+  }
+
+  Future getFollowersLength() async {
+    return usersRef
+        .doc(user?.email.toString())
+        .collection('follwers')
+        .get()
+        .then((value) {
+      printMe(value.size, 'follower length');
+      return value.size;
+    });
+  }
+  Future getFollowingLength() async {
+    return usersRef
+        .doc(user?.email.toString())
+        .collection('following')
+        .get()
+        .then((value) {
+      printMe(value.size, 'follower length');
+      return value.size;
+    });
+  }
+
   List profilePages = [
     {
       'icon': Icons.grid_view,

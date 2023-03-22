@@ -31,6 +31,7 @@ class HomePage extends GetView<HomeController> {
       ),
       bottomNavigationBar: Obx(
         () => BottomAppBar(
+          color: primaryColor,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,25 +44,33 @@ class HomePage extends GetView<HomeController> {
                     : Padding(
                         padding: const EdgeInsets.only(top: 5.0, bottom: 5),
                         child: item['index'] == controller.index.value
-                            ? Container(
-                                height: 45,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: item['index'] != controller.index.value
-                                      ? Colors.black
-                                      : primaryForegroundColor,
-                                ),
-                                child: IconButton(
-                                  icon: Center(
-                                    child: Icon(
-                                      item['icon'],
-                                      color: whiteColor,
-                                      size: 25.0,
+                            ? Material(
+                                shape:
+                                    const CircleBorder(side: BorderSide.none),
+                                elevation: 4,
+                                child: CircleAvatar(
+                                  backgroundColor:
+                                      primaryColor.withOpacity(0.8),
+                                  // height: 45,
+                                  // width: 40,
+                                  // decoration: BoxDecoration(
+                                  //   shape: BoxShape.circle,
+                                  //   color:
+                                  //       item['index'] != controller.index.value
+                                  //           ? Colors.black
+                                  //           : blackColor,
+                                  //  ),
+                                  child: IconButton(
+                                    icon: Center(
+                                      child: Icon(
+                                        item['icon'],
+                                        color: whiteColor,
+                                        size: 25.0,
+                                      ),
                                     ),
+                                    onPressed: () =>
+                                        navigationTapped(item['index']),
                                   ),
-                                  onPressed: () =>
-                                      navigationTapped(item['index']),
                                 ),
                               )
                             : IconButton(
@@ -88,7 +97,7 @@ class HomePage extends GetView<HomeController> {
       width: 45.0,
       // ignore: missing_required_param
       child: AddIconContainer(
-        icon: Ionicons.add_outline,
+        icon: Ionicons.add,
         mini: true,
       ),
     );

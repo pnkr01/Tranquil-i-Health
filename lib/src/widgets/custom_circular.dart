@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:healthhero/src/theme/app_color.dart';
 
 class CustomCircleLoading {
   static void showDialog() {
@@ -10,7 +11,7 @@ class CustomCircleLoading {
           child: Center(
             child: CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation(
-                Colors.yellow,
+                primaryColor,
               ),
             ),
           ),

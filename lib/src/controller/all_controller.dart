@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:healthhero/src/controller/auth_controller.dart';
 
+import '../screen/pages/controller/feed_controller.dart';
 import '../screen/pages/controller/home_controller.dart';
 import '../screen/pages/profile/controller/profile_controller.dart';
 import 'handle_onboarding_controller.dart';
@@ -14,6 +15,7 @@ class AllBindings extends Bindings {
     Get.lazyPut(() => LoginController(), fenix: true);
     Get.lazyPut(() => HomeController(), fenix: true);
     Get.lazyPut(() => ProfileController(), fenix: true);
+    Get.lazyPut(() => FeedController(), fenix: true);
     //Get.lazyPut(() => LoginController());
   }
 }
