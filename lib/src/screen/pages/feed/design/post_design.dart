@@ -73,15 +73,16 @@ class DesignPost extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(24)),
-                  child: CachedNetworkImage(
-                      placeholder: (context, url) => createImageShimmer(),
-                      imageUrl: "${model.mediaUrl}"),
+              if (model.mediaUrl != null)
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(24)),
+                    child: CachedNetworkImage(
+                        placeholder: (context, url) => createImageShimmer(),
+                        imageUrl: "${model.mediaUrl}"),
+                  ),
                 ),
-              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10.0, 0, 10, 10),
                 child: ExpandableText(

@@ -11,6 +11,7 @@ import '../../../model/post_model.dart';
 import '../../../utils/circle_shimmer.dart';
 import '../../../utils/circular_progress.dart';
 import '../../helper/firebase_helper.dart';
+import 'components/group_screen_view.dart';
 import 'design/group_design.dart';
 import '../../../model/group_model.dart';
 
@@ -76,7 +77,13 @@ class FeedsScreen extends GetView<FeedController> {
                             //printMe(posts, index);
                             return Padding(
                               padding: const EdgeInsets.only(right: 10),
-                              child: GroupDesignView(model: group),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.to(() =>
+                                      GroupScreenView(route: '${group.title}'));
+                                },
+                                child: GroupDesignView(model: group),
+                              ),
                             );
                           },
                         );

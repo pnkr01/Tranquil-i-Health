@@ -5,7 +5,7 @@ import 'package:healthhero/src/theme/app_color.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     Key? key,
-    required this.title,
+    this.title,
     this.actions,
     this.leading,
     this.showLead = false,
@@ -13,7 +13,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor,
     this.preferredSize = const Size.fromHeight(57),
   }) : super(key: key);
-  final String title;
+  final String? title;
   final List<Widget>? actions;
   final Widget? leading;
   final bool? showLead;
@@ -23,8 +23,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      leading: leading,
       actions: actions,
-      title: Text(title, style: kBodyTextTitleStyle()),
+      title: Text('', style: kBodyTextTitleStyle()),
       centerTitle: centerTitle,
       automaticallyImplyLeading: showLead ?? false,
       backgroundColor: whiteColor,

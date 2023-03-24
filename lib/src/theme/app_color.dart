@@ -8,6 +8,8 @@ const Color inactiveIconColor = Color(0XFFAEAEB3);
 const Color blackColor = Colors.black;
 const Color whiteColor = Colors.white;
 const Color greyColor = Color(0xFFC4C4C4);
+const Color redColor = Colors.red;
+const Color greenColor = Colors.green;
 Color lightGreenColor = const Color(0xFF1CC26F).withOpacity(0.5);
 const Color blueColor = Color(0xff3D49EE);
 
@@ -28,6 +30,14 @@ TextStyle kBodyTextSubtitleStyle() {
     color: Colors.white,
     fontSize: 12.sp,
     fontWeight: FontWeight.w500,
+  );
+}
+
+TextStyle kBodyTextSubtitleStyle1() {
+  return GoogleFonts.montserrat(
+    color: blackColor,
+    fontSize: 12.sp,
+    fontWeight: FontWeight.w700,
   );
 }
 

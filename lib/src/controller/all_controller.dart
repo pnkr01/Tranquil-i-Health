@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:healthhero/src/controller/auth_controller.dart';
+import 'package:healthhero/src/screen/pages/createpost/controller/create_post_controller.dart';
 
 import '../screen/pages/controller/feed_controller.dart';
 import '../screen/pages/controller/home_controller.dart';
@@ -16,6 +17,7 @@ class AllBindings extends Bindings {
     Get.lazyPut(() => HomeController(), fenix: true);
     Get.lazyPut(() => ProfileController(), fenix: true);
     Get.lazyPut(() => FeedController(), fenix: true);
+    Get.lazyPut(() => CreatePostController(), fenix: true);
     //Get.lazyPut(() => LoginController());
   }
 }
