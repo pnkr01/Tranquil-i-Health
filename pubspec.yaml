@@ -59,6 +59,7 @@ dependencies:
   expandable_text: ^2.3.0
   flutter_social_textfield: ^0.1.2
   file_picker: ^5.2.6
+  emoji_picker_flutter: ^1.5.2
 
 dev_dependencies:
   flutter_test:

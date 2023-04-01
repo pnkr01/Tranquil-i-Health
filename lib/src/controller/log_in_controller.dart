@@ -33,7 +33,7 @@ class LoginController extends GetxController {
               googleSignInAccount.displayName,
               googleSignInAccount.email,
               googleSignInAccount.photoUrl,
-              googleSignInAccount.id));
+              value.user!.uid));
 
       if (kDebugMode) {
         print(oAuthCredential);

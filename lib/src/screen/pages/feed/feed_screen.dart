@@ -6,7 +6,6 @@ import 'package:healthhero/src/constants/global.dart';
 import 'package:healthhero/src/screen/pages/controller/feed_controller.dart';
 import 'package:healthhero/src/screen/pages/feed/design/post_design.dart';
 import 'package:healthhero/src/theme/app_color.dart';
-
 import '../../../model/post_model.dart';
 import '../../../utils/circle_shimmer.dart';
 import '../../../utils/circular_progress.dart';
@@ -116,11 +115,11 @@ class FeedsScreen extends GetView<FeedController> {
                       topRight: Radius.circular(20),
                     ),
                   ),
-                  child: FutureBuilder(
-                    future: postRef
+                  child: StreamBuilder(
+                    stream: postRef
                         .orderBy('timestamp', descending: true)
                         .limit(controller.page.value)
-                        .get(),
+                        .snapshots(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                         var snap = snapshot.data;

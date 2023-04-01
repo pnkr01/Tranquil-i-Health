@@ -109,7 +109,8 @@ class _CreatePostState extends State<CreatePost> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Pawan Kumar', style: kBodyTextSubtitleStyle1()),
+                      Text(controller.getUsername ?? 'L',
+                          style: kBodyTextSubtitleStyle1()),
                       Obx(
                         () => DropdownButtonHideUnderline(
                           child: DropdownButton<String>(

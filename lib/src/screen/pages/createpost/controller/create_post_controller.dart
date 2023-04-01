@@ -17,6 +17,7 @@ class CreatePostController extends GetxController {
   getUserProfile() => firebaseAuth.currentUser?.photoURL;
 
   String? get getUserImg => firebaseAuth.currentUser?.photoURL;
+  String? get getUsername => firebaseAuth.currentUser?.displayName;
   String get getPostImgUrl => '';
 
   Rx<PlatformFile>? pickedFile;
@@ -29,7 +30,17 @@ class CreatePostController extends GetxController {
         'timestamp': DateTime.now(),
         'postText': writePostController.value.text,
         'postimgUrl': imgUrl,
-      }).then((value) {
+        'email': firebaseAuth.currentUser?.email,
+      }).then((value) async {
+        firestore.collection('posts').doc().set({
+          'id': firebaseAuth.currentUser?.uid,
+          'username': sharedPreferences.getString('name'),
+          'timestamp': DateTime.now(),
+          'description': writePostController.value.text,
+          'mediaUrl': imgUrl,
+          'email': firebaseAuth.currentUser?.email,
+          'ownerurl': firebaseAuth.currentUser?.photoURL,
+        });
         Get.back();
         Get.back();
         showSnackBar('Your post is live', greenColor, blackColor);

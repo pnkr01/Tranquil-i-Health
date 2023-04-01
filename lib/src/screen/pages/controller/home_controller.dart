@@ -22,7 +22,7 @@ class HomeController extends GetxController {
     {
       'title': 'Search',
       'icon': Ionicons.search,
-      'page': const SearchScreen(),
+      'page': const SearchPage(),
       'index': 1,
     },
     {
