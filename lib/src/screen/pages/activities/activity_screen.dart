@@ -22,6 +22,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   Stream? groups;
   bool _isLoading = false;
   String groupName = "";
+  String groupDesc = "";
   User? user = FirebaseAuth.instance.currentUser;
 
   @override
@@ -82,7 +83,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
           popUpDialog(context);
         },
         elevation: 0,
-        backgroundColor: kDefaultIconDarkColor,
+        backgroundColor: primaryForegroundColor,
         child: const Icon(
           Icons.add,
           color: Colors.white,
@@ -111,6 +112,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
                           child: CircularProgressIndicator(color: greenColor),
                         )
                       : TextField(
+                          cursorColor: primaryForegroundColor,
                           onChanged: (val) {
                             setState(() {
                               groupName = val;
@@ -118,53 +120,70 @@ class _ActivityScreenState extends State<ActivityScreen> {
                           },
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
+                              hintText: 'Enter group name',
+                              hintStyle: const TextStyle(
+                                  color: greyColor, fontSize: 12),
+                              labelText: 'Enter group name',
+                              labelStyle: const TextStyle(
+                                  color: primaryForegroundColor),
                               enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor),
+                                  borderSide: const BorderSide(
+                                      color: primaryForegroundColor),
                                   borderRadius: BorderRadius.circular(20)),
                               errorBorder: OutlineInputBorder(
                                   borderSide:
                                       const BorderSide(color: Colors.red),
                                   borderRadius: BorderRadius.circular(20)),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context).primaryColor),
+                                  borderSide: const BorderSide(
+                                      color: primaryForegroundColor),
                                   borderRadius: BorderRadius.circular(20))),
                         ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (groupName != "") {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          DBService(uid: FirebaseAuth.instance.currentUser!.uid)
+                              .createGroup(
+                                  userName,
+                                  FirebaseAuth.instance.currentUser!.uid,
+                                  groupName)
+                              .whenComplete(() {
+                            _isLoading = false;
+                          });
+                          Navigator.of(context).pop();
+                          showSnackBar("Group created successfully.",
+                              greenColor, Colors.white);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: greenColor,
+                          side: const BorderSide(color: greenColor)),
+                      child: const Text("CREATE"),
+                    ),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: whiteColor,
+                          side: const BorderSide(color: redColor)),
+                      child: const Text(
+                        "CANCEL",
+                        style: TextStyle(color: redColor),
+                      ),
+                    ),
+                  ),
                 ],
               ),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor),
-                  child: const Text("CANCEL"),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (groupName != "") {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      DBService(
-                              uid: FirebaseAuth.instance.currentUser!.uid)
-                          .createGroup(userName,
-                              FirebaseAuth.instance.currentUser!.uid, groupName)
-                          .whenComplete(() {
-                        _isLoading = false;
-                      });
-                      Navigator.of(context).pop();
-                      showSnackBar("Group created successfully.", greenColor,
-                          Colors.white);
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor),
-                  child: const Text("CREATE"),
-                )
-              ],
             );
           }));
         });

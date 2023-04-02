@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:healthhero/src/theme/app_color.dart';
 
 class MessageTile extends StatefulWidget {
   final String message;
@@ -44,9 +45,7 @@ class _MessageTileState extends State<MessageTile> {
                     topRight: Radius.circular(20),
                     bottomRight: Radius.circular(20),
                   ),
-            color: widget.sentByMe
-                ? Theme.of(context).primaryColor
-                : Colors.grey[700]),
+            color: widget.sentByMe ? primaryForegroundColor : greyColor),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

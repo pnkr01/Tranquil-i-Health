@@ -10,6 +10,7 @@ import '../../../model/post_model.dart';
 import '../../../utils/circle_shimmer.dart';
 import '../../../utils/circular_progress.dart';
 import '../../helper/firebase_helper.dart';
+import '../activities/activity_screen.dart';
 import 'components/group_screen_view.dart';
 import 'design/group_design.dart';
 import '../../../model/group_model.dart';
@@ -37,12 +38,7 @@ class FeedsScreen extends GetView<FeedController> {
                 size: 30.0,
               ),
               onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   CupertinoPageRoute(
-                //     builder: (_) => Chats(),
-                //   ),
-                // );
+                Get.to(() => const ActivityScreen());
               },
             ),
           ),

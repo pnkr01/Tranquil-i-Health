@@ -33,7 +33,7 @@ class AddIconContainer extends StatelessWidget {
       closedColor: Theme.of(context).scaffoldBackgroundColor,
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
         return FloatingActionButton(
-          backgroundColor: lightGreenColor,
+          backgroundColor: primaryForegroundColor,
           onPressed: () {
             chooseUpload(context);
           },

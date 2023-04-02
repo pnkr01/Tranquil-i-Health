@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:healthhero/src/theme/app_color.dart';
 
 import '../screen/pages/chat/chat.dart';
 
@@ -24,17 +25,16 @@ class _GroupTileState extends State<GroupTile> {
     return GestureDetector(
       onTap: () {
         Get.to(() => ChatPage(
-              groupId: widget.groupId,
-              groupName: widget.groupName,
-              userName: widget.userName,
-            ));
+            groupId: widget.groupId,
+            groupName: widget.groupName,
+            userName: widget.userName));
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
         child: ListTile(
           leading: CircleAvatar(
             radius: 30,
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: primaryForegroundColor,
             child: Text(
               widget.groupName.substring(0, 1).toUpperCase(),
               textAlign: TextAlign.center,

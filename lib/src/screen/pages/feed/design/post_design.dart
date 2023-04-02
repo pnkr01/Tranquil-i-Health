@@ -62,7 +62,7 @@ class DesignPost extends StatelessWidget {
                       // Get.to(() => ChatRoomView(jModel: jModel, model: model));
                     },
                     icon: const Icon(
-                      Icons.send,
+                      Icons.more_horiz,
                       color: primaryForegroundColor,
                     )),
                 subtitle: Text(

@@ -106,9 +106,7 @@ class _SearchPageState extends State<SearchPage> {
       setState(() {
         isLoading = true;
       });
-      await DBService()
-          .searchByName(searchController.text)
-          .then((snapshot) {
+      await DBService().searchByName(searchController.text).then((snapshot) {
         setState(() {
           searchSnapshot = snapshot;
           isLoading = false;
@@ -140,9 +138,11 @@ class _SearchPageState extends State<SearchPage> {
     await DBService(uid: user!.uid)
         .isUserJoined(groupname, groupId, userName)
         .then((value) {
-      setState(() {
-        isJoined = value;
-      });
+      if (mounted) {
+        setState(() {
+          isJoined = value;
+        });
+      }
     });
   }
 
@@ -150,65 +150,72 @@ class _SearchPageState extends State<SearchPage> {
       String userName, String groupId, String groupName, String admin) {
     // function to check whether user already exists in group
     joinedOrNot(userName, groupId, groupName, admin);
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      leading: CircleAvatar(
-        radius: 30,
-        backgroundColor: Theme.of(context).primaryColor,
-        child: Text(
-          groupName.substring(0, 1).toUpperCase(),
-          style: const TextStyle(color: Colors.white),
+    return Card(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12))),
+      child: ListTile(
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        leading: CircleAvatar(
+          radius: 25,
+          backgroundColor: primaryForegroundColor,
+          child: Text(
+            groupName.substring(0, 1).toUpperCase(),
+            style: const TextStyle(color: Colors.white),
+          ),
         ),
-      ),
-      title:
-          Text(groupName, style: const TextStyle(fontWeight: FontWeight.w600)),
-      subtitle: Text("Admin: ${getName(admin)}"),
-      trailing: InkWell(
-        onTap: () async {
-          await DBService(uid: user!.uid)
-              .toggleGroupJoin(groupId, userName, groupName);
-          if (isJoined) {
-            setState(() {
-              isJoined = !isJoined;
-            });
-            showSnackBar(
-                "Successfully joined he group", greenColor, Colors.white);
-            Future.delayed(const Duration(seconds: 2), () {
-              Get.to(() => ChatPage(
-                  groupId: groupId, groupName: groupName, userName: userName));
-            });
-          } else {
-            setState(() {
-              isJoined = !isJoined;
-              showSnackBar("Successfully Left the group $groupName", redColor,
-                  Colors.white);
-            });
-          }
-        },
-        child: isJoined
-            ? Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.black,
-                  border: Border.all(color: Colors.white, width: 1),
+        title: Text(groupName,
+            style: const TextStyle(fontWeight: FontWeight.w600)),
+        subtitle: Text("Admin: ${getName(admin)}"),
+        trailing: InkWell(
+          onTap: () async {
+            await DBService(uid: user!.uid)
+                .toggleGroupJoin(groupId, userName, groupName);
+            if (isJoined) {
+              setState(() {
+                isJoined = !isJoined;
+              });
+              showSnackBar(
+                  "Successfully joined the group", greenColor, Colors.white);
+              Future.delayed(const Duration(seconds: 1), () {
+                Get.to(() => ChatPage(
+                    groupId: groupId,
+                    groupName: groupName,
+                    userName: userName));
+              });
+            } else {
+              setState(() {
+                isJoined = !isJoined;
+                showSnackBar("Successfully Left the group $groupName", redColor,
+                    Colors.white);
+              });
+            }
+          },
+          child: isJoined
+              ? Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: primaryForegroundColor,
+                    border: Border.all(color: Colors.white, width: 1),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: const Text(
+                    "Joined",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              : Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: primaryForegroundColor,
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: const Text("Join Now",
+                      style: TextStyle(color: Colors.white)),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: const Text(
-                  "Joined",
-                  style: TextStyle(color: Colors.white),
-                ),
-              )
-            : Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Theme.of(context).primaryColor,
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: const Text("Join Now",
-                    style: TextStyle(color: Colors.white)),
-              ),
+        ),
       ),
     );
   }

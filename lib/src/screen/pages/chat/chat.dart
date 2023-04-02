@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healthhero/src/screen/pages/chat/group_info.dart';
+import 'package:healthhero/src/theme/app_color.dart';
 
 import '../../../helper/database_service.dart';
 import '../../../widgets/message_tile.dart';
@@ -52,7 +53,7 @@ class _ChatPageState extends State<ChatPage> {
         centerTitle: true,
         elevation: 0,
         title: Text(widget.groupName),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: primaryColor,
         actions: [
           IconButton(
               onPressed: () {
@@ -75,7 +76,7 @@ class _ChatPageState extends State<ChatPage> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
               width: MediaQuery.of(context).size.width,
-              color: Colors.grey[700],
+              color: primaryColor,
               child: Row(children: [
                 Expanded(
                     child: TextFormField(
@@ -98,7 +99,7 @@ class _ChatPageState extends State<ChatPage> {
                     height: 50,
                     width: 50,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
+                      color: primaryForegroundColor,
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: const Center(

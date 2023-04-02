@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:healthhero/src/theme/app_color.dart';
 
 import '../../../helper/database_service.dart';
 import '../home_screen.dart';
@@ -52,7 +53,7 @@ class _GroupInfoState extends State<GroupInfo> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: primaryColor,
         title: const Text("Group Info"),
         actions: [
           IconButton(
@@ -85,7 +86,7 @@ class _GroupInfoState extends State<GroupInfo> {
                                       getName(widget.adminName),
                                       widget.groupName)
                                   .whenComplete(() {
-                                Get.off(() => const HomePage());
+                                Get.offAll(() => const HomePage());
                               });
                             },
                             icon: const Icon(
