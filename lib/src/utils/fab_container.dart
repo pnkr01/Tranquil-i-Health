@@ -56,7 +56,7 @@ class AddIconContainer extends StatelessWidget {
       ),
       builder: (BuildContext context) {
         return FractionallySizedBox(
-          heightFactor: .4,
+          heightFactor: .3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -87,16 +87,16 @@ class AddIconContainer extends StatelessWidget {
                   // );
                 },
               ),
-              ListTile(
-                leading: const Icon(
-                  CupertinoIcons.camera_on_rectangle,
-                  size: 25.0,
-                ),
-                title: const Text('Add to story'),
-                onTap: () async {
-                  // await viewModel.pickImage(context: context);
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(
+              //     CupertinoIcons.camera_on_rectangle,
+              //     size: 25.0,
+              //   ),
+              //   title: const Text('Add to story'),
+              //   onTap: () async {
+              //     // await viewModel.pickImage(context: context);
+              //   },
+              // ),
             ],
           ),
         );

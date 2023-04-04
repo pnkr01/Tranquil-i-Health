@@ -28,6 +28,7 @@ class SearchPage extends GetView<SearchController> {
               children: [
                 Expanded(
                   child: TextField(
+                    cursorColor: primaryForegroundColor,
                     controller: controller.searchController,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
@@ -59,7 +60,8 @@ class SearchPage extends GetView<SearchController> {
           Obx(
             () => controller.isLoading.value
                 ? const Center(
-                    child: CircularProgressIndicator(color: primaryForegroundColor),
+                    child: CircularProgressIndicator(
+                        color: primaryForegroundColor),
                   )
                 : controller.groupList(),
           ),
@@ -68,40 +70,3 @@ class SearchPage extends GetView<SearchController> {
     );
   }
 }
-
-
-  // TextEditingController searchController = TextEditingController();
-  // bool isLoading = false;
-  // QuerySnapshot? searchSnapshot;
-  // bool hasUserSearched = false;
-  // String userName = "";
-  // bool isJoined = false;
-  // User? user = FirebaseAuth.instance.currentUser;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getCurrentUserIdandName();
-  // }
-
-  // getCurrentUserIdandName() async {
-  //   userName = user!.displayName!;
-  // }
-
-  // String getName(String r) {
-  //   return r.substring(r.indexOf("_") + 1);
-  // }
-
-  // String getId(String res) {
-  //   return res.substring(0, res.indexOf("_"));
-  // }
-
-
- 
-
-  
-
-  
-
-  
-

@@ -13,6 +13,7 @@ class HomePage extends GetView<HomeController> {
   Widget build(BuildContext context) {
     Get.put(HomeController());
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Obx(
         () => PageTransitionSwitcher(
           transitionBuilder: (

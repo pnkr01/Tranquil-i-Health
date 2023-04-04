@@ -17,6 +17,7 @@ class SearchController extends GetxController {
 
   TextEditingController searchController = TextEditingController();
   RxBool isLoading = false.obs;
+  RxBool isSearching = false.obs;
   QuerySnapshot? searchSnapshot;
   RxBool hasUserSearched = false.obs;
   String userName = "";

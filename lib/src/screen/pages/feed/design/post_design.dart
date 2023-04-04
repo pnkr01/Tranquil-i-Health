@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:healthhero/src/model/joined_group_model.dart';
 import 'package:healthhero/src/model/post_model.dart';
 import 'package:healthhero/src/theme/app_color.dart';
 import 'package:healthhero/src/utils/circle_shimmer.dart';
+import 'package:like_button/like_button.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class DesignPost extends StatelessWidget {
@@ -113,6 +116,24 @@ class DesignPost extends StatelessWidget {
                     decoration: TextDecoration.underline,
                   ),
                 ),
+              ),
+              LikeButton(
+                padding: EdgeInsets.zero,
+                size: 50,
+                circleColor: const CircleColor(
+                    start: Color(0xff00ddff), end: Color(0xff0099cc)),
+                bubblesColor: const BubblesColor(
+                  dotPrimaryColor: primaryForegroundColor,
+                  dotSecondaryColor: Color.fromARGB(255, 204, 0, 204),
+                ),
+                likeBuilder: (bool isLiked) {
+                  return Icon(
+                    Icons.favorite,
+                    color: isLiked ? primaryForegroundColor : Colors.grey,
+                    size: 25,
+                  );
+                },
+                likeCount: Random().nextInt(12),
               ),
             ],
           ),
