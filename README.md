@@ -50,9 +50,7 @@
 
 ## Why Tranquil-i-Health
 
-In the day to day busy world, the traditional methods of visiting the doctor, long processes of fixing an appointment can be a totally hectic task.
-Keeping in mind, the expenses and time, we got an effective solution.
-Our solution allows the user to have doctor appointments, medicine prescription and even ambulance bookings in an efficient way. We have also providing Mental Helath chatbot.
+
 
 ## About The Project
 
