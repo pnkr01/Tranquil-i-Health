@@ -167,7 +167,7 @@ Contributions are what make the open source community such an amazing place to b
 
 Created with ❤️ by Team 
 - Pawan Kumar
-- Abhhinandan Roul
+- Abhinandan Roul
 - Shubhaprasad Padhy
 
 
