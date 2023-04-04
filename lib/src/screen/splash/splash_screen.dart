@@ -19,7 +19,7 @@ class HandleOnBoarding extends StatelessWidget {
             ),
             Center(
               child: Hero(
-                tag: 5,
+                tag: 'hero-1',
                 child: Image.asset(logo),
               ),
             ),
