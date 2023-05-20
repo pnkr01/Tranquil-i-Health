@@ -1,0 +1,228 @@
+import 'dart:developer';
+
+import 'package:animate_do/animate_do.dart';
+import 'package:bard_api/bard_api.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:get/get.dart';
+import 'package:healthhero/src/constants/global.dart';
+import 'package:healthhero/src/screen/pages/chatgpt/pallate.dart';
+import 'package:healthhero/src/theme/app_color.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
+import 'package:speech_to_text/speech_to_text.dart';
+import 'feature_box.dart';
+
+class ChatScreenPage extends StatefulWidget {
+  const ChatScreenPage({super.key});
+
+  @override
+  State<ChatScreenPage> createState() => _ChatScreenPageState();
+}
+
+class _ChatScreenPageState extends State<ChatScreenPage> {
+  final speechToText = SpeechToText();
+  final flutterTts = FlutterTts();
+  String lastWords = '';
+  String? generatedContent;
+  String? generatedImageUrl;
+  int start = 200;
+  int delay = 200;
+
+  bool isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+    initSpeechToText();
+    initTextToSpeech();
+  }
+
+  Future<void> initTextToSpeech() async {
+    await flutterTts.setSharedInstance(true);
+    setState(() {});
+  }
+
+  Future<void> initSpeechToText() async {
+    await speechToText.initialize();
+    setState(() {});
+  }
+
+  Future<void> startListening() async {
+    await speechToText.listen(
+        onResult: onSpeechResult, listenFor: const Duration(seconds: 10));
+    await speechToText.listen(onResult: onSpeechResult);
+    setState(() {});
+  }
+
+  Future<void> stopListening() async {
+    await speechToText.stop();
+    setState(() {});
+  }
+
+  void onSpeechResult(SpeechRecognitionResult result) {
+    setState(() {
+      lastWords = result.recognizedWords;
+    });
+  }
+
+  Future<void> systemSpeak(String content) async {
+    await flutterTts.speak(content);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    speechToText.stop();
+    flutterTts.stop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        title: BounceInDown(
+          child: const Text('Bard AI'),
+        ),
+        // leading: const Icon(Icons.menu),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // chat bubble
+            FadeInRight(
+              child: Visibility(
+                visible: generatedImageUrl == null,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  margin: const EdgeInsets.symmetric(horizontal: 40).copyWith(
+                    top: 30,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: ColorClass.borderColor,
+                    ),
+                    borderRadius: BorderRadius.circular(20).copyWith(
+                      topRight: Radius.zero,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Text(
+                      generatedContent == null
+                          ? 'I am Google Bard AI, Here to boost your productivity..'
+                          : generatedContent!,
+                      style: TextStyle(
+                        color: primaryColor,
+                        fontSize: generatedContent == null ? 22 : 18,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SlideInLeft(
+              child: Visibility(
+                visible: generatedContent == null && generatedImageUrl == null,
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.only(top: 10, left: 22),
+                  child: const Text(
+                    'Here are a few features',
+                    style: TextStyle(
+                      color: ColorClass.mainFontColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // features list
+            Visibility(
+              visible: generatedContent == null && generatedImageUrl == null,
+              child: Column(
+                children: [
+                  SlideInLeft(
+                    delay: Duration(milliseconds: start),
+                    child: const CustomBox(
+                      color: Color(0xff4285F4),
+                      Hcolor: whiteColor,
+                      Dcolor: whiteColor,
+                      headerText: 'BARD AI',
+                      descriptionText:
+                          'A smarter way to stay updated and informed with Google Bard AI',
+                    ),
+                  ),
+                  SlideInLeft(
+                    delay: Duration(milliseconds: start + 2 * delay),
+                    child: const CustomBox(
+                      Hcolor: whiteColor,
+                      Dcolor: whiteColor,
+                      color: Color(0xffDB4437),
+                      headerText: 'Smart Voice Assistant',
+                      descriptionText:
+                          'Get your query solved with voice Assistant',
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: ZoomIn(
+        delay: Duration(milliseconds: start + 3 * delay),
+        child: FloatingActionButton(
+          backgroundColor: ColorClass.firstSuggestionBoxColor,
+          onPressed: () async {
+            if (await speechToText.hasPermission &&
+                speechToText.isNotListening) {
+              await startListening();
+            } else if (speechToText.isListening) {
+              // ignore: use_build_context_synchronously
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: const [
+                            LinearProgressIndicator(
+                              color: Color(0xffF4B400),
+                            ),
+                            Text('Recognizing Text..'),
+                          ],
+                        ),
+                      ));
+              try {
+                final bard = ChatBot(
+                    sessionId:
+                        "Wwgnq8ID5Lmg-p4Par5YUhrmFY6HLu0N1cVYErV1Qfjytm7cMZip_Pr1spPKhslw89Oqw.");
+                final speech = await bard.ask(lastWords);
+                log(speech.toString());
+                final result = speech["content"];
+                //final speech = await openAIService.isArtPromptAPI(lastWords);
+                generatedContent = result;
+                Get.back();
+                await systemSpeak(result);
+                await stopListening();
+              } catch (e) {
+                Get.back();
+                showSnackBar("Session ID Expired..", primaryColor, whiteColor);
+              }
+            } else {
+              initSpeechToText();
+            }
+          },
+          child: Icon(
+            speechToText.isListening ? Icons.stop : Icons.mic,
+          ),
+        ),
+      ),
+    );
+  }
+}

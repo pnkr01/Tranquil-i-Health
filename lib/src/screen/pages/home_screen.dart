@@ -1,10 +1,13 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:healthhero/src/screen/pages/chatgpt/chat_page.dart';
 import 'package:healthhero/src/screen/pages/controller/home_controller.dart';
 import 'package:healthhero/src/theme/app_color.dart';
 import 'package:healthhero/src/utils/fab_container.dart';
 import 'package:ionicons/ionicons.dart';
+
+import 'chat/chat.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -89,6 +92,48 @@ class HomePage extends GetView<HomeController> {
           ),
         ),
       ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(left: 28.0),
+        child: Align(
+          alignment: Alignment.bottomLeft,
+          child: FloatingActionButton(
+              backgroundColor: primaryForegroundColor,
+              child: const Icon(Icons.mic),
+              onPressed: () {
+                Get.to(const ChatScreenPage());
+              }),
+        ),
+      ),
+      // floatingActionButton: ZoomIn(
+      //   delay: Duration(milliseconds: start + 3 * delay),
+      //   child: FloatingActionButton(
+      //     backgroundColor: Pallete.firstSuggestionBoxColor,
+      //     onPressed: () async {
+      //       if (await speechToText.hasPermission &&
+      //           speechToText.isNotListening) {
+      //         await startListening();
+      //       } else if (speechToText.isListening) {
+      //         final speech = await openAIService.isArtPromptAPI(lastWords);
+      //         if (speech.contains('https')) {
+      //           generatedImageUrl = speech;
+      //           generatedContent = null;
+      //           setState(() {});
+      //         } else {
+      //           generatedImageUrl = null;
+      //           generatedContent = speech;
+      //           setState(() {});
+      //           await systemSpeak(speech);
+      //         }
+      //         await stopListening();
+      //       } else {
+      //         initSpeechToText();
+      //       }
+      //     },
+      //     child: Icon(
+      //       speechToText.isListening ? Icons.stop : Icons.mic,
+      //     ),
+      //   ),
+      // ),
     );
   }
 

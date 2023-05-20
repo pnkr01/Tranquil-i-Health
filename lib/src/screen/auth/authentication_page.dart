@@ -32,7 +32,7 @@ class AuthenticationPage extends GetView<LoginController> {
                 const SizedBox(
                   height: 30,
                 ),
-                Image.asset('assets/images/a.png'),
+                Image.asset('assets/images/health.png'),
                 const SizedBox(
                   height: 20,
                 ),
