@@ -130,10 +130,6 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 7f8ee33539de3435a7672dff7d05dd4d0f54a791
 ## APP Screenshots
 
 <div align="center">
