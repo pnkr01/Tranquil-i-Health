@@ -13,7 +13,7 @@ class AuthenticationPage extends GetView<LoginController> {
     Get.put(AuthController());
     Get.put(LoginController());
     return Scaffold(
-      backgroundColor: primaryColor,
+      backgroundColor: whiteColor,
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         child: SafeArea(
@@ -39,7 +39,8 @@ class AuthenticationPage extends GetView<LoginController> {
                 Text(
                   textAlign: TextAlign.center,
                   'Join the health revolution and connect with peoples',
-                  style: kBodyTextBodyMediumStyle(),
+                  style:
+                      kBodyTextBodyMediumStyle().copyWith(color: primaryColor),
                 ),
                 const SizedBox(
                   height: 8,
@@ -56,7 +57,7 @@ class AuthenticationPage extends GetView<LoginController> {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: blueColor,
+                      backgroundColor: const Color(0xff4285F4),
                       shape: const StadiumBorder(),
                     ),
                     onPressed: () {
@@ -74,8 +75,8 @@ class AuthenticationPage extends GetView<LoginController> {
                         ),
                         Text(
                           'Get Started',
-                          style:
-                              kBodyTextBodyMediumStyle().copyWith(fontSize: 20),
+                          style: kBodyTextBodyMediumStyle()
+                              .copyWith(fontSize: 20, color: whiteColor),
                         )
                       ],
                     ),

@@ -7,8 +7,6 @@ import 'package:healthhero/src/theme/app_color.dart';
 import 'package:healthhero/src/utils/fab_container.dart';
 import 'package:ionicons/ionicons.dart';
 
-import 'chat/chat.dart';
-
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
 
@@ -95,12 +93,12 @@ class HomePage extends GetView<HomeController> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(left: 28.0),
         child: Align(
-          alignment: Alignment.bottomLeft,
+          alignment: Alignment.bottomRight,
           child: FloatingActionButton(
               backgroundColor: primaryForegroundColor,
               child: const Icon(Icons.mic),
               onPressed: () {
-                Get.to(const ChatScreenPage());
+                Get.to(() => const ChatScreenPage());
               }),
         ),
       ),
