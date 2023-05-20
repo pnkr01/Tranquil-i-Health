@@ -130,6 +130,7 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+
 ## APP Screenshots
 
 <div align="center">
@@ -160,6 +161,7 @@ samples, guidance on mobile development, and a full API reference.
 
 ### View Demo
 
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -174,7 +176,6 @@ Created with ❤️ by Team
 - Abhinandan Roul
 - Shubhaprasad Padhy
 - Pawan Kumar
-
 
 ## License
 
