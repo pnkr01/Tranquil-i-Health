@@ -73,6 +73,7 @@ class _GroupInfoState extends State<GroupInfo> {
                             },
                             icon: const Icon(
                               Icons.cancel,
+                              size: 34,
                               color: Colors.red,
                             ),
                           ),
@@ -91,6 +92,7 @@ class _GroupInfoState extends State<GroupInfo> {
                             },
                             icon: const Icon(
                               Icons.done,
+                              size: 34,
                               color: Colors.green,
                             ),
                           ),
@@ -177,7 +179,7 @@ class _GroupInfoState extends State<GroupInfo> {
                         ),
                       ),
                       title: Text(getName(snapshot.data['members'][index])),
-                      subtitle: Text(getId(snapshot.data['members'][index])),
+                      //subtitle: Text(getId(snapshot.data['members'][index])),
                     ),
                   );
                 },

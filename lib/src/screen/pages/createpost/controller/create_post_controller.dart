@@ -40,10 +40,25 @@ class CreatePostController extends GetxController {
           'mediaUrl': imgUrl,
           'email': firebaseAuth.currentUser?.email,
           'ownerurl': firebaseAuth.currentUser?.photoURL,
+        }).then((value) {
+          firestore
+              .collection('user')
+              .doc(user?.email)
+              .collection("posts")
+              .doc()
+              .set({
+            'id': firebaseAuth.currentUser?.uid,
+            'username': sharedPreferences.getString('name'),
+            'timestamp': DateTime.now(),
+            'description': writePostController.value.text,
+            'mediaUrl': imgUrl,
+            'email': firebaseAuth.currentUser?.email,
+            'ownerurl': firebaseAuth.currentUser?.photoURL,
+          });
         });
         Get.back();
         Get.back();
-        showSnackBar('Your post is live', greenColor, blackColor);
+        showSnackBar("Your post is live", primaryColor, whiteColor);
       });
     }
   }

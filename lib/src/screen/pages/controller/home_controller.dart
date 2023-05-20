@@ -33,7 +33,7 @@ class HomeController extends GetxController {
     },
     {
       'title': 'Notification',
-      'icon': CupertinoIcons.bell_solid,
+      'icon': Ionicons.chatbox,
       'page': const ActivityScreen(),
       'index': 3,
     },

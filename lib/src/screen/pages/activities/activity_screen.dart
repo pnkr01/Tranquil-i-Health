@@ -39,17 +39,23 @@ class ActivityScreen extends GetView<ActivityController> {
                 ),
               ),
       ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'hero-2',
-        onPressed: () {
-          controller.popUpDialog(context);
-        },
-        elevation: 0,
-        backgroundColor: primaryForegroundColor,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 30,
+      floatingActionButton: Align(
+        alignment: Alignment.bottomLeft,
+        child: Container(
+          margin: const EdgeInsets.only(left: 40),
+          child: FloatingActionButton(
+            heroTag: 'hero-2',
+            onPressed: () {
+              controller.popUpDialog(context);
+            },
+            elevation: 0,
+            backgroundColor: primaryForegroundColor,
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
         ),
       ),
     );

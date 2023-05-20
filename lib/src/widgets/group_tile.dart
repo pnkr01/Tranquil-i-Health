@@ -47,7 +47,7 @@ class _GroupTileState extends State<GroupTile> {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
-            "Join the conversation as ${widget.userName}",
+            "Talk as ${widget.userName}",
             style: const TextStyle(fontSize: 13),
           ),
         ),

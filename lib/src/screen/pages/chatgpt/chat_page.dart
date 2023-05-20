@@ -162,7 +162,7 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: ColorClass.firstSuggestionBoxColor,
+        backgroundColor: const Color(0xff4285F4),
         onPressed: () async {
           if (await speechToText.hasPermission && speechToText.isNotListening) {
             await startListening();

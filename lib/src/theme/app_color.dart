@@ -25,6 +25,13 @@ TextStyle kBodyTextTitleStyle() {
   );
 }
 
+TextStyle kProfileTextStyle() {
+  return GoogleFonts.montserrat(
+    fontWeight: FontWeight.w600,
+    color: blackColor,
+  );
+}
+
 TextStyle kBodyTextSubtitleStyle() {
   return GoogleFonts.montserrat(
     color: Colors.white,

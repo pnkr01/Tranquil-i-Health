@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:healthhero/src/constants/global.dart';
+import 'package:healthhero/src/screen/pages/profile/components/widgets/my_post.dart';
 import 'package:healthhero/src/screen/pages/profile/controller/profile_controller.dart';
 import 'package:healthhero/src/theme/app_color.dart';
 import 'package:ionicons/ionicons.dart';
@@ -18,89 +18,164 @@ class ProfileScreen extends GetView<ProfileController> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           elevation: 0,
-          backgroundColor: whiteColor,
-          centerTitle: true,
+          backgroundColor: primaryColor,
           title: Text(
-            'Profile',
-            style: kBodyTextTitleStyle(),
+            'My Account',
+            style: kBodyTextTitleStyle().copyWith(color: whiteColor),
           ),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 10),
-                Align(
-                  child: CircleAvatar(
-                    radius: 50.h, // Image radius
-                    backgroundImage: NetworkImage(controller.user?.photoURL ??
-                        'https://i.pinimg.com/564x/16/dd/1a/16dd1abb3f890a59e454149884a19a7c.jpg'),
-                  ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Text(
-                  '${controller.getUserName.capitalizeFirst}',
-                  style: kBodyTextTitleStyle(),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _userInfo(),
-                      const SizedBox(height: 20),
-                      //_userActions(),
-                      // const SizedBox(height: 20),
-                      Obx(
-                        () => SizedBox(
-                          height: 48,
-                          child: AppBar(
-                            backgroundColor: whiteColor,
-                            elevation: 0,
-                            bottom: TabBar(
-                              indicatorColor: primaryForegroundColor,
-                              tabs: List.generate(
-                                3,
-                                (index) => Tab(
-                                    child: GestureDetector(
-                                  onTap: () {
-                                    controller.changeIdx(index);
-                                    printMe(controller.idx.value, index);
-                                  },
-                                  child: Icon(
-                                    controller.profilePages[index]["icon"],
-                                    color: index == controller.idx.value
-                                        ? primaryForegroundColor
-                                        : greyColor,
-                                  ),
-                                )),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+                  Card(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 10, bottom: 10),
+                      child: Row(
+                        children: [
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: CircleAvatar(
+                              radius: 20.h, // Image radius
+                              backgroundImage: NetworkImage(controller
+                                      .user?.photoURL ??
+                                  'https://i.pinimg.com/564x/16/dd/1a/16dd1abb3f890a59e454149884a19a7c.jpg'),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${controller.getUserName.capitalizeFirst}',
+                                style: kBodyTextTitleStyle()
+                                    .copyWith(fontWeight: FontWeight.w600),
                               ),
-                            ),
-                          ),
-                        ),
+                              Text(
+                                '${controller.getUserEmail.capitalizeFirst}',
+                                softWrap: true,
+                                style: kBodyTextTitleStyle().copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: greyColor,
+                                    fontSize: 14),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                      SingleChildScrollView(
-                        child: SizedBox(
-                          height: 500,
-                          child: TabBarView(
-                            physics: const ScrollPhysics(),
-                            children: List.generate(
-                              3,
-                              (index) => controller.profilePages[index]["page"],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () => Get.to(() => const MyPostScreen()),
+                    child: Card(
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 10, bottom: 10),
+                        width: double.infinity,
+                        child: Text(
+                          'Your Post',
+                          style: kProfileTextStyle(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Card(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 10, bottom: 10),
+                      width: double.infinity,
+                      child: Text(
+                        'Your Reach',
+                        style: kProfileTextStyle(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Card(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 10, bottom: 10),
+                      width: double.infinity,
+                      child: Text(
+                        'Your Score',
+                        style: kProfileTextStyle(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Card(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 10, bottom: 10),
+                      width: double.infinity,
+                      child: Text(
+                        'Your Data',
+                        style: kProfileTextStyle(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Card(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 10, bottom: 10),
+                      width: double.infinity,
+                      child: Text(
+                        'Privacy',
+                        style: kProfileTextStyle(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Card(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 10, bottom: 10),
+                      width: double.infinity,
+                      child: Text(
+                        'Data Sharing',
+                        style: kProfileTextStyle(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Card(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 10, bottom: 10),
+                      width: double.infinity,
+                      child: Text(
+                        'Session Management',
+                        style: kProfileTextStyle(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Card(
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 10, bottom: 10),
+                      width: double.infinity,
+                      child: Text(
+                        'Your Security Keys',
+                        style: kProfileTextStyle(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Center(
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 38,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryColor),
+                        onPressed: () {},
+                        child: const Text('Logout'),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
