@@ -31,9 +31,6 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#why-Tranquil-i-Health">Why Tranquil i Health</a>
-    </li>
-    <li>
       <a href="#about-the-project">About The Project</a>
     </li>
     <li>
@@ -47,10 +44,6 @@
     <li><a href="#license">License</a></li>
   </ol>
 </details>
-
-## Why Tranquil-i-Health
-
-
 
 ## About The Project
 
@@ -67,21 +60,6 @@ In addition, our community app facilitates communication amongst people who have
 
 Tranquil-i-Health empowers users to manage their health and connect with like-minded others. Our goal is to encourage people to make positive changes in their health and to speak out about their own experiences so that others might benefit.
 
-
-## Key Features Implemented
-
-- Awesome UX and easy to use friendly interface
-
-- Patient Profile and Doctor Profile
-
-- Book Appointment with doctors and book ambulance
-
-- AugustPlus chat Bot for mental health
-
-- Video Calling 100ms sdk integrated
-
-- Digitally handling Report 
-
 ### Tech Stacks
 
 **Mobile Applicaton:**
@@ -89,7 +67,7 @@ Tranquil-i-Health empowers users to manage their health and connect with like-mi
 - Flutter
 - Firebase
 - Firestore Database
-- ChatGPT
+- Bard AI
 
 
 ## Getting Started
