@@ -1,15 +1,16 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_textfield/widget/social_text_field_controller.dart';
 import 'package:get/get.dart';
+import 'package:pdf_text/pdf_text.dart';
 import 'package:healthhero/src/constants/global.dart';
 import 'package:healthhero/src/screen/pages/createpost/controller/create_post_controller.dart';
 import 'package:healthhero/src/theme/app_color.dart';
 import 'package:healthhero/src/widgets/app_bar.dart';
+import 'package:string_similarity/string_similarity.dart';
 
 class CreatePost extends StatefulWidget {
   const CreatePost({super.key});
@@ -19,6 +20,58 @@ class CreatePost extends StatefulWidget {
 }
 
 class _CreatePostState extends State<CreatePost> {
+  var controller = Get.find<CreatePostController>();
+  String? filePath;
+  String extractedText = '';
+
+  Future<void> pickPDFFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    setState(() {
+      filePath = result?.files.single.path;
+      extractedText = '';
+    });
+  }
+
+  checkPdf() async {
+    final extracted = await extractTextFromPDF();
+    String myString =
+        '${controller.hospitalNameController.text}${controller.doctorName.text}${controller.duration.text}${controller.medicineController.text}${controller.symptoms.text}';
+    print(extracted.replaceAll('\n', ''));
+    print(extractedText.contains(myString));
+
+    if (StringSimilarity.compareTwoStrings(myString, extractedText) > 0) {
+      if (pickedFile != null) {
+        uploadFile().then((url) {
+          printMe('url of image picked', url);
+          controller.postbutton(url);
+          setState(() {
+            showProgress = !showProgress;
+          });
+        });
+      } else {
+        showSnackBar("choose img to post..", primaryColor, whiteColor);
+      }
+      //upload task
+      //do other things here..
+    } else {
+      showSnackBar(
+          "Your Document is not legit to be used for creating this post.",
+          primaryColor,
+          whiteColor);
+    }
+  }
+
+  Future<String> extractTextFromPDF() async {
+    // final File pdfFile = File(filePath!);
+    PDFDoc doc = await PDFDoc.fromPath(filePath!);
+    String docText = await doc.text;
+    return docText;
+  }
+
   PlatformFile? pickedFile;
   handleFileUpload() async {
     final result = await FilePicker.platform.pickFiles();
@@ -64,17 +117,16 @@ class _CreatePostState extends State<CreatePost> {
                 backgroundColor: primaryForegroundColor,
               ),
               onPressed: () {
-                if (pickedFile != null) {
-                  uploadFile().then((url) {
-                    printMe('url of image picked', url);
-                    controller.postbutton(url);
-                    setState(() {
-                      showProgress = !showProgress;
-                    });
-                  });
+                if (pickedFile != null &&
+                    filePath != null &&
+                    controller.doctorName.text.isNotEmpty &&
+                    controller.duration.text.isNotEmpty &&
+                    controller.medicineController.text.isNotEmpty &&
+                    controller.symptoms.text.isNotEmpty) {
+                  checkPdf();
                 } else {
-                  showSnackBar(
-                      "choose img to post..", primaryColor, whiteColor);
+                  showSnackBar("Choose Document/blanks to Post", primaryColor,
+                      whiteColor);
                 }
               },
               child: Text('Post', style: kBodyTextSubtitleStyle()),
@@ -349,6 +401,12 @@ class _CreatePostState extends State<CreatePost> {
                       handleFileUpload();
                     },
                     icon: const Icon(Icons.photo),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      pickPDFFile();
+                    },
+                    icon: const Icon(Icons.picture_as_pdf),
                   ),
                 ],
               ),

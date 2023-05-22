@@ -64,7 +64,7 @@ class AddIconContainer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Center(
-                  child: Text('Choose Upload',
+                  child: Text('Share thought',
                       textAlign: TextAlign.center,
                       style: kBodyTextSubtitleStyle()
                           .copyWith(color: primaryColor)),
