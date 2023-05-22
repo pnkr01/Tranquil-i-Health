@@ -63,6 +63,7 @@ dependencies:
   speech_to_text: ^6.1.1
   rive: ^0.11.0
   bard_api: ^1.0.0
+  http: ^0.13.6
 
 dev_dependencies:
   flutter_test:

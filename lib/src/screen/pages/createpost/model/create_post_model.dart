@@ -9,12 +9,14 @@ class CreatePostModel {
   DateTime? timestamp;
   String? postText;
   String? postimgUrl;
+  String? score;
   CreatePostModel({
     this.userImg,
     this.userName,
     this.timestamp,
     this.postText,
     this.postimgUrl,
+    this.score,
   });
 
   CreatePostModel copyWith({
@@ -52,6 +54,7 @@ class CreatePostModel {
           : null,
       postText: map['postText'],
       postimgUrl: map['postimgUrl'],
+      score: map['score'],
       // (json['timestamp'] as Timestamp).toDate();
     );
   }

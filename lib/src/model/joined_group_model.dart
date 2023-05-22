@@ -5,6 +5,7 @@ class JoinedGroup {
   String userName;
   String userImg;
   String email;
+  double score;
   JoinedGroup({
     required this.postText,
     required this.postimgUrl,
@@ -12,6 +13,7 @@ class JoinedGroup {
     required this.userName,
     required this.userImg,
     required this.email,
+    required this.score,
   });
 
   factory JoinedGroup.fromJson(Map<String, dynamic> map) {
@@ -22,6 +24,7 @@ class JoinedGroup {
       userName: map['userName'] ?? '',
       userImg: map['userImg'] ?? '',
       email: map['email'] ?? '',
+      score: map['score'] ?? '',
     );
   }
 }

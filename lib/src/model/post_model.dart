@@ -11,6 +11,7 @@ class PostModel {
   String? mediaUrl;
   String? ownerurl;
   DateTime? timestamp;
+  double? score;
 
   PostModel({
     this.id,
@@ -23,6 +24,7 @@ class PostModel {
     this.mediaUrl,
     this.ownerurl,
     this.timestamp,
+    this.score,
   });
   PostModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -35,6 +37,7 @@ class PostModel {
     ownerurl = json['ownerurl'];
     timestamp = (json['timestamp'] as Timestamp).toDate();
     email = json['email'];
+    score = json['score'];
   }
 
   Map<String, dynamic> toJson() {

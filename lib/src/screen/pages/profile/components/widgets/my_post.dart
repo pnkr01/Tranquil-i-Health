@@ -26,7 +26,10 @@ class MyPostScreen extends StatelessWidget {
         color: blueColor,
         onRefresh: () {
           printMe('refreshing', 'feed_screen.dart');
-          return myPostRef
+          return FirebaseFirestore.instance
+              .collection('user')
+              .doc(firebaseAuth.currentUser?.email)
+              .collection('posts')
               .orderBy('timestamp', descending: true)
               .limit(controller.page.value)
               .get();
@@ -42,7 +45,10 @@ class MyPostScreen extends StatelessWidget {
             ),
           ),
           child: StreamBuilder(
-            stream: myPostRef
+            stream: FirebaseFirestore.instance
+                .collection('user')
+                .doc(firebaseAuth.currentUser?.email)
+                .collection('posts')
                 .orderBy('timestamp', descending: true)
                 .limit(controller.page.value)
                 .snapshots(),

@@ -7,7 +7,6 @@ import 'package:healthhero/src/model/joined_group_model.dart';
 import 'package:healthhero/src/screen/pages/feed/controller/joined_group_controller.dart';
 import 'package:healthhero/src/theme/app_color.dart';
 import 'package:healthhero/src/utils/circular_progress.dart';
-
 import '../../../helper/firebase_helper.dart';
 import '../design/post_design.dart';
 

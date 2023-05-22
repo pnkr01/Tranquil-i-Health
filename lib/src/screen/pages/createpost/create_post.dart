@@ -72,6 +72,9 @@ class _CreatePostState extends State<CreatePost> {
                       showProgress = !showProgress;
                     });
                   });
+                } else {
+                  showSnackBar(
+                      "choose img to post..", primaryColor, whiteColor);
                 }
               },
               child: Text('Post', style: kBodyTextSubtitleStyle()),
@@ -80,6 +83,7 @@ class _CreatePostState extends State<CreatePost> {
         ],
         leading: IconButton(
           onPressed: () {
+            Get.back();
             Get.back();
           },
           icon: const Icon(
@@ -134,6 +138,166 @@ class _CreatePostState extends State<CreatePost> {
                 ],
               ),
               SizedBox(
+                height: 80,
+                child: DefaultSocialTextFieldController(
+                  detectionPresentationMode:
+                      DetectionPresentationMode.above_text_field,
+                  focusNode: FocusNode(),
+                  //scrollController: _scrollController,
+                  textEditingController: controller.postController,
+                  detectionBuilders: const {
+                    // DetectedType.mention: (context) => mentionContent(height),
+                    // DetectedType.hashtag: (context) => hashtagContent(height),
+                    // DetectedType.url: (context) => urlContent(height)
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        TextField(
+                          cursorColor: primaryForegroundColor,
+                          scrollPhysics:
+                              const ClampingScrollPhysics(), //Use this for unnecessary scroll bounces
+                          // scrollController: _scrollController,
+                          focusNode: FocusNode(),
+                          controller: controller.hospitalNameController,
+                          // expands: true,
+                          maxLines: 2,
+                          decoration: InputDecoration(
+                              focusedBorder: const UnderlineInputBorder(),
+                              enabledBorder: const UnderlineInputBorder(),
+                              focusColor: primaryColor,
+                              hintText: "Which Hospital??",
+                              hintStyle: kBodyTextSubtitleStyle1()
+                                  .copyWith(color: greyColor)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 80,
+                child: DefaultSocialTextFieldController(
+                  detectionPresentationMode:
+                      DetectionPresentationMode.above_text_field,
+                  focusNode: FocusNode(),
+                  //scrollController: _scrollController,
+                  textEditingController: controller.postController,
+                  detectionBuilders: const {
+                    // DetectedType.mention: (context) => mentionContent(height),
+                    // DetectedType.hashtag: (context) => hashtagContent(height),
+                    // DetectedType.url: (context) => urlContent(height)
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        TextField(
+                          cursorColor: primaryForegroundColor,
+                          scrollPhysics:
+                              const ClampingScrollPhysics(), //Use this for unnecessary scroll bounces
+                          // scrollController: _scrollController,
+                          focusNode: FocusNode(),
+                          controller: controller.doctorName,
+                          // expands: true,
+                          maxLines: 2,
+                          decoration: InputDecoration(
+                              focusedBorder: const UnderlineInputBorder(),
+                              enabledBorder: const UnderlineInputBorder(),
+                              focusColor: primaryColor,
+                              hintText: "Who was your doctor??",
+                              hintStyle: kBodyTextSubtitleStyle1()
+                                  .copyWith(color: greyColor)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 80,
+                child: DefaultSocialTextFieldController(
+                  detectionPresentationMode:
+                      DetectionPresentationMode.above_text_field,
+                  focusNode: FocusNode(),
+                  //scrollController: _scrollController,
+                  textEditingController: controller.postController,
+                  detectionBuilders: const {
+                    // DetectedType.mention: (context) => mentionContent(height),
+                    // DetectedType.hashtag: (context) => hashtagContent(height),
+                    // DetectedType.url: (context) => urlContent(height)
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        TextField(
+                          cursorColor: primaryForegroundColor,
+                          scrollPhysics:
+                              const ClampingScrollPhysics(), //Use this for unnecessary scroll bounces
+                          // scrollController: _scrollController,
+                          focusNode: FocusNode(),
+                          controller: controller.duration,
+                          // expands: true,
+                          maxLines: 2,
+                          decoration: InputDecoration(
+                              focusedBorder: const UnderlineInputBorder(),
+                              enabledBorder: const UnderlineInputBorder(),
+                              focusColor: primaryColor,
+                              hintText: "What is your duration??",
+                              hintStyle: kBodyTextSubtitleStyle1()
+                                  .copyWith(color: greyColor)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 80,
+                child: DefaultSocialTextFieldController(
+                  detectionPresentationMode:
+                      DetectionPresentationMode.above_text_field,
+                  focusNode: FocusNode(),
+                  //scrollController: _scrollController,
+                  textEditingController: controller.postController,
+                  detectionBuilders: const {
+                    // DetectedType.mention: (context) => mentionContent(height),
+                    // DetectedType.hashtag: (context) => hashtagContent(height),
+                    // DetectedType.url: (context) => urlContent(height)
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        TextField(
+                          cursorColor: primaryForegroundColor,
+                          scrollPhysics:
+                              const ClampingScrollPhysics(), //Use this for unnecessary scroll bounces
+                          // scrollController: _scrollController,
+                          focusNode: FocusNode(),
+                          controller: controller.medicineController,
+                          // expands: true,
+                          maxLines: 2,
+                          decoration: InputDecoration(
+                              focusedBorder: const UnderlineInputBorder(),
+                              enabledBorder: const UnderlineInputBorder(),
+                              focusColor: primaryColor,
+                              hintText: "Which medicine you have taken??",
+                              hintStyle: kBodyTextSubtitleStyle1()
+                                  .copyWith(color: greyColor)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
                 height: 230,
                 child: DefaultSocialTextFieldController(
                   detectionPresentationMode:
@@ -157,15 +321,14 @@ class _CreatePostState extends State<CreatePost> {
                               const ClampingScrollPhysics(), //Use this for unnecessary scroll bounces
                           // scrollController: _scrollController,
                           focusNode: FocusNode(),
-                          controller: controller.writePostController,
+                          controller: controller.symptoms,
                           // expands: true,
-                          maxLines: 20,
-                          minLines: 10,
+                          maxLines: 10,
                           decoration: InputDecoration(
                               focusedBorder: const UnderlineInputBorder(),
                               enabledBorder: const UnderlineInputBorder(),
                               focusColor: primaryColor,
-                              hintText: "Share your thoughts",
+                              hintText: "Symptoms and Diagnosis/ Summary",
                               hintStyle: kBodyTextSubtitleStyle1()
                                   .copyWith(color: greyColor)),
                         ),

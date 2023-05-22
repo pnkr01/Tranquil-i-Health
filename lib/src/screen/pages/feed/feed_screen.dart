@@ -120,7 +120,6 @@ class FeedsScreen extends GetView<FeedController> {
                       if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                         var snap = snapshot.data;
                         List docs = snap!.docs;
-                        printMe(snap, docs);
                         return ListView.builder(
                           controller: controller.scrollController,
                           itemCount: docs.length,

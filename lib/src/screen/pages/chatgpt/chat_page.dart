@@ -97,9 +97,7 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
                   top: 30,
                 ),
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: ColorClass.borderColor,
-                  ),
+                  color: primaryForegroundColor,
                   borderRadius: BorderRadius.circular(20).copyWith(
                     topRight: Radius.zero,
                   ),
@@ -111,7 +109,7 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
                         ? 'I am Google Bard AI, Here to boost your productivity..'
                         : generatedContent!,
                     style: TextStyle(
-                      color: primaryColor,
+                      color: whiteColor,
                       fontSize: generatedContent == null ? 22 : 18,
                     ),
                   ),
@@ -125,7 +123,7 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
                 alignment: Alignment.centerLeft,
                 margin: const EdgeInsets.only(top: 10, left: 22),
                 child: const Text(
-                  'Here are a few features',
+                  'Here are some features',
                   style: TextStyle(
                     color: ColorClass.mainFontColor,
                     fontSize: 20,
