@@ -17,7 +17,7 @@ CollectionReference myPostRef = firestore
     .collection('user')
     .doc(sharedPreferences.getString('email'))
     .collection("media");
-CollectionReference groupRef = firestore.collection('group');
+CollectionReference groupRef = firestore.collection('groups');
 //-----------------------social------------------------------//
 
 

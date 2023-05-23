@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_textfield/widget/social_text_field_controller.dart';
 import 'package:get/get.dart';
+import 'package:healthhero/src/widgets/custom_circular.dart';
 import 'package:pdf_text/pdf_text.dart';
 import 'package:healthhero/src/constants/global.dart';
 import 'package:healthhero/src/screen/pages/createpost/controller/create_post_controller.dart';
@@ -40,10 +41,8 @@ class _CreatePostState extends State<CreatePost> {
     final extracted = await extractTextFromPDF();
     String myString =
         '${controller.hospitalNameController.text}${controller.doctorName.text}${controller.duration.text}${controller.medicineController.text}${controller.symptoms.text}';
-    print(extracted.replaceAll('\n', ''));
-    print(extractedText.contains(myString));
 
-    if (StringSimilarity.compareTwoStrings(myString, extractedText) > 0) {
+    if (StringSimilarity.compareTwoStrings(myString, extracted) > 0) {
       if (pickedFile != null) {
         uploadFile().then((url) {
           printMe('url of image picked', url);
@@ -53,13 +52,15 @@ class _CreatePostState extends State<CreatePost> {
           });
         });
       } else {
+        CustomCircleLoading.cancelDialog();
         showSnackBar("choose img to post..", primaryColor, whiteColor);
       }
       //upload task
       //do other things here..
     } else {
+      CustomCircleLoading.cancelDialog();
       showSnackBar(
-          "Your Document is not legit to be used for creating this post.",
+          "Given Document is not legit and cannot be used to creating this post.",
           primaryColor,
           whiteColor);
     }
@@ -117,6 +118,7 @@ class _CreatePostState extends State<CreatePost> {
                 backgroundColor: primaryForegroundColor,
               ),
               onPressed: () {
+                CustomCircleLoading.showDialog();
                 if (pickedFile != null &&
                     filePath != null &&
                     controller.doctorName.text.isNotEmpty &&
@@ -125,6 +127,7 @@ class _CreatePostState extends State<CreatePost> {
                     controller.symptoms.text.isNotEmpty) {
                   checkPdf();
                 } else {
+                  CustomCircleLoading.cancelDialog();
                   showSnackBar("Choose Document/blanks to Post", primaryColor,
                       whiteColor);
                 }

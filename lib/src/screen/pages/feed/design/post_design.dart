@@ -1,13 +1,14 @@
-import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:healthhero/src/constants/global.dart';
+import 'package:healthhero/src/screen/helper/firebase_helper.dart';
 import 'package:healthhero/src/model/joined_group_model.dart';
 import 'package:healthhero/src/model/post_model.dart';
 import 'package:healthhero/src/theme/app_color.dart';
 import 'package:healthhero/src/utils/circle_shimmer.dart';
-import 'package:like_button/like_button.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class DesignPost extends StatefulWidget {
@@ -24,6 +25,155 @@ class DesignPost extends StatefulWidget {
 }
 
 class _DesignPostState extends State<DesignPost> {
+  hitIncLikeApi(String postid) {
+    firestore
+        .collection('posts')
+        .doc(postid)
+        .update({"like": FieldValue.increment(1)}).then((value) {
+      firestore
+          .collection('user')
+          .doc(sharedPreferences.getString('email'))
+          .collection("posts")
+          .doc(postid)
+          .update({"like": FieldValue.increment(1)}).then((value) {
+        firestore
+            .collection(widget.model?.category ?? widget.jModel!.category)
+            .doc(postid)
+            .update({"like": FieldValue.increment(1)});
+      });
+    });
+  }
+
+  hitDecLikeApi(String postid) {
+    firestore.collection('posts').doc(postid).get().then((value) {
+      if (value.exists) {
+        int fieldValue = value.data()?['like'] ?? 0;
+        if (fieldValue > 0) {
+          firestore.collection('posts').doc(postid).update({
+            'like': FieldValue.increment(-1),
+          });
+        }
+      }
+    }).then((value) {
+      firestore
+          .collection('user')
+          .doc(sharedPreferences.getString('email'))
+          .collection("posts")
+          .doc(postid)
+          .get()
+          .then((value) {
+        if (value.exists) {
+          int fieldValue = value.data()?['like'] ?? 0;
+          if (fieldValue > 0) {
+            firestore
+                .collection('user')
+                .doc(sharedPreferences.getString('email'))
+                .collection("posts")
+                .doc(postid)
+                .update({
+              'like': FieldValue.increment(-1),
+            });
+          }
+        }
+      }).then((value) {
+        print(widget.model?.category);
+        firestore
+            .collection(widget.model?.category ?? widget.jModel!.category)
+            .doc(postid)
+            .get()
+            .then((value) {
+          if (value.exists) {
+            int fieldValue = value.data()?['like'] ?? 0;
+            if (fieldValue > 0) {
+              firestore
+                  .collection(widget.model?.category ?? widget.jModel!.category)
+                  .doc(postid)
+                  .update({
+                'like': FieldValue.increment(-1),
+              });
+            }
+          }
+        });
+      });
+    });
+  }
+
+  hitDisLikeDecrementApi(String postid) {
+    firestore.collection('posts').doc(postid).get().then((value) {
+      if (value.exists) {
+        int fieldValue = value.data()?['dislike'] ?? 0;
+        if (fieldValue > 0) {
+          firestore.collection('posts').doc(postid).update({
+            'dislike': FieldValue.increment(-1),
+          });
+        }
+      }
+    }).then((value) {
+      firestore
+          .collection('user')
+          .doc(sharedPreferences.getString('email'))
+          .collection("posts")
+          .doc(postid)
+          .get()
+          .then((value) {
+        if (value.exists) {
+          int fieldValue = value.data()?['dislike'] ?? 0;
+          if (fieldValue > 0) {
+            firestore
+                .collection('user')
+                .doc(sharedPreferences.getString('email'))
+                .collection("posts")
+                .doc(postid)
+                .update({
+              'dislike': FieldValue.increment(-1),
+            });
+          }
+        }
+      }).then((value) {
+        print(widget.model?.category);
+        firestore
+            .collection(widget.model?.category ?? widget.jModel!.category)
+            .doc(postid)
+            .get()
+            .then((value) {
+          if (value.exists) {
+            int fieldValue = value.data()?['dislike'] ?? 0;
+            if (fieldValue > 0) {
+              firestore
+                  .collection(widget.model?.category ?? widget.jModel!.category)
+                  .doc(postid)
+                  .update({
+                'dislike': FieldValue.increment(-1),
+              });
+            }
+          }
+        });
+      });
+    });
+  }
+
+  hitIncDislike(String postid) {
+    firestore
+        .collection('posts')
+        .doc(postid)
+        .update({"dislike": FieldValue.increment(1)}).then((value) {
+      firestore
+          .collection('user')
+          .doc(sharedPreferences.getString('email'))
+          .collection("posts")
+          .doc(postid)
+          .update({"dislike": FieldValue.increment(1)}).then((value) {
+        firestore
+            .collection(widget.model?.category ?? widget.jModel!.category)
+            .doc(postid)
+            .update({"dislike": FieldValue.increment(1)});
+      });
+    });
+  }
+
+  bool isLiked = false;
+  bool isThumbDown = false;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -64,42 +214,19 @@ class _DesignPostState extends State<DesignPost> {
                   style:
                       kBodyTextBodyMediumStyle().copyWith(color: primaryColor),
                 ),
-                trailing: widget.model?.score != null
-                    ? Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(8)),
-                          color: widget.model!.score! > 0
-                              ? primaryForegroundColor
-                              : redColor,
-                        ),
-                        child: widget.model!.score! > 0
-                            ? const Text(
-                                'Positive',
-                                style: TextStyle(color: whiteColor),
-                              )
-                            : const Text(
-                                'Critical Post',
-                                style: TextStyle(color: whiteColor),
-                              ),
-                      )
-                    : Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(8)),
-                          color: widget.jModel!.score > 0
-                              ? primaryForegroundColor
-                              : redColor,
-                        ),
-                        child: widget.jModel!.score > 0
-                            ? const Text(
-                                'Positive',
-                                style: TextStyle(color: whiteColor),
-                              )
-                            : const Text('Critical Post'),
-                      ),
+                trailing: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      color: primaryForegroundColor),
+                  child: Text(
+                    widget.model?.role.toString().capitalizeFirst ??
+                        widget.jModel!.role.toString().capitalizeFirst!,
+                    style: const TextStyle(
+                      color: whiteColor,
+                    ),
+                  ),
+                ),
                 subtitle: Text(
                   timeago.format(
                       widget.model?.timestamp ?? widget.jModel!.timestamp),
@@ -124,7 +251,11 @@ class _DesignPostState extends State<DesignPost> {
                             widget.jModel!.postimgUrl),
                   ),
                 ),
-              Padding(
+              GestureDetector(
+                onTap: () {
+                  
+                },
+                child: Padding(
                   padding: const EdgeInsets.fromLTRB(20.0, 0, 10, 0),
                   child: widget.model != null
                       ? Column(
@@ -132,7 +263,9 @@ class _DesignPostState extends State<DesignPost> {
                           children: [
                             ExpandableText(
                               animationCurve: Curves.easeIn,
-                              'My Hospital is : ${widget.model?.description?.split('**')[0]}\n\nDoctor is : ${widget.model?.description?.split('**')[1]}\n\nDuration is : ${widget.model?.description?.split('**')[2]}\n\nMedicine Taken is : ${widget.model?.description?.split('**')[3]}\n\nSymtoms is : ${widget.model?.description?.split('**')[4]}',
+                              widget.model?.role == "patient"
+                                  ? 'My Hospital is : ${widget.model?.description?.split('**')[0]}\n\nDoctor is : ${widget.model?.description?.split('**')[1]}\n\nDuration is : ${widget.model?.description?.split('**')[2]}\n\nSymtoms is : ${widget.model?.description?.split('**')[4]}'
+                                  : 'My Hospital is : ${widget.model?.description?.split('**')[0]}\n\nDoctor is : ${widget.model?.description?.split('**')[1]}\n\nDuration is : ${widget.model?.description?.split('**')[2]}\n\nMedicine Taken is : ${widget.model?.description?.split('**')[3]}\n\nSymtoms is : ${widget.model?.description?.split('**')[4]}',
                               expandText: 'show more',
                               style: kBodyTextSubtitleStyle()
                                   .copyWith(color: blackColor),
@@ -158,24 +291,54 @@ class _DesignPostState extends State<DesignPost> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12)),
-                                  color: primaryForegroundColor),
-                              child: Text(
-                                '${sharedPreferences.getString('role')}',
-                                style: const TextStyle(
-                                  color: whiteColor,
-                                ),
-                              ),
-                            ),
+                            widget.model?.score != null &&
+                                    widget.model?.role == "patient"
+                                ? Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(8)),
+                                      color: widget.model!.score! > 0
+                                          ? primaryForegroundColor
+                                          : redColor,
+                                    ),
+                                    child: widget.model!.score! > 0
+                                        ? const Text(
+                                            'Positive',
+                                            style: TextStyle(color: whiteColor),
+                                          )
+                                        : const Text(
+                                            'Critical Post',
+                                            style: TextStyle(color: whiteColor),
+                                          ),
+                                  )
+                                : widget.jModel?.score != null &&
+                                        widget.jModel?.role == "patient"
+                                    ? Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(8)),
+                                          color: widget.jModel!.score > 0
+                                              ? primaryForegroundColor
+                                              : redColor,
+                                        ),
+                                        child: widget.jModel!.score > 0
+                                            ? const Text(
+                                                'Positive',
+                                                style:
+                                                    TextStyle(color: whiteColor),
+                                              )
+                                            : const Text('Critical Post'),
+                                      )
+                                    : const SizedBox(),
                           ],
                         )
                       : ExpandableText(
                           animationCurve: Curves.easeIn,
-                          'My Hospital is : ${widget.jModel?.postText.split('**')[0]}\n\nDoctor is : ${widget.jModel?.postText.split('**')[1]}\n\nDuration is : ${widget.jModel?.postText.split('**')[2]}\n\nMedicine Taken is : ${widget.jModel?.postText.split('**')[3]}\n\nSymtoms is : ${widget.jModel?.postText.split('**')[4]}',
+                          widget.jModel?.role == "patient"
+                              ? 'My Hospital is : ${widget.model?.description?.split('**')[0]}\n\nDoctor is : ${widget.model?.description?.split('**')[1]}\n\nDuration is : ${widget.model?.description?.split('**')[2]}\n\nSymtoms is : ${widget.model?.description?.split('**')[4]}'
+                              : 'My Hospital is : ${widget.model?.description?.split('**')[0]}\n\nDoctor is : ${widget.model?.description?.split('**')[1]}\n\nDuration is : ${widget.model?.description?.split('**')[2]}\n\nMedicine Taken is : ${widget.model?.description?.split('**')[3]}\n\nSymtoms is : ${widget.model?.description?.split('**')[4]}',
                           expandText: 'show more',
                           style: kBodyTextSubtitleStyle()
                               .copyWith(color: blackColor),
@@ -199,25 +362,104 @@ class _DesignPostState extends State<DesignPost> {
                           urlStyle: const TextStyle(
                             decoration: TextDecoration.underline,
                           ),
-                        )),
-              LikeButton(
-                padding: EdgeInsets.zero,
-                size: 50,
-                circleColor: const CircleColor(
-                    start: Color(0xff00ddff), end: Color(0xff0099cc)),
-                bubblesColor: const BubblesColor(
-                  dotPrimaryColor: primaryForegroundColor,
-                  dotSecondaryColor: Color.fromARGB(255, 204, 0, 204),
+                        ),
                 ),
-                likeBuilder: (bool isLiked) {
-                  return Icon(
-                    Icons.favorite,
-                    color: isLiked ? primaryForegroundColor : Colors.grey,
-                    size: 25,
-                  );
-                },
-                likeCount: Random().nextInt(12),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          isLiked
+                              ? hitDecLikeApi(
+                                  widget.model?.postId ?? widget.jModel!.postid)
+                              : hitIncLikeApi(widget.model?.postId ??
+                                  widget.jModel!.postid);
+                          setState(() {
+                            isLiked = !isLiked;
+                          });
+                        },
+                        icon: const Icon(Icons.favorite, size: 28),
+                        color: isLiked ? primaryForegroundColor : Colors.grey,
+                      ),
+                      Text(
+                          widget.model?.like.toString() ??
+                              widget.jModel!.like.toString(),
+                          style: TextStyle(
+                              color:
+                                  isLiked ? primaryForegroundColor : greyColor,
+                              fontSize: 18))
+                    ],
+                  ), // ),
+                  widget.model?.role != null &&
+                          widget.model!.score! <= 0 &&
+                          widget.model?.role == "patient"
+                      ? Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                !isThumbDown
+                                    ? hitIncDislike(widget.model?.postId ??
+                                        widget.jModel!.postid)
+                                    : hitDisLikeDecrementApi(
+                                        widget.model?.postId ??
+                                            widget.jModel!.postid);
+                                setState(() {
+                                  isThumbDown = !isThumbDown;
+                                });
+                              },
+                              icon: const Icon(Icons.thumb_down, size: 28),
+                              color: isThumbDown
+                                  ? primaryForegroundColor
+                                  : Colors.grey,
+                            ),
+                            Text(
+                                widget.model?.dislike.toString() ??
+                                    widget.jModel!.dislike.toString(),
+                                style: TextStyle(
+                                    color: isThumbDown
+                                        ? primaryForegroundColor
+                                        : greyColor,
+                                    fontSize: 18))
+                          ],
+                        )
+                      : widget.jModel != null &&
+                              widget.jModel!.score <= 0 &&
+                              widget.jModel?.role == "patient"
+                          ? Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    !isThumbDown
+                                        ? hitIncDislike(widget.model?.postId ??
+                                            widget.jModel!.postid)
+                                        : hitDisLikeDecrementApi(
+                                            widget.model?.postId ??
+                                                widget.jModel!.postid);
+                                    setState(() {
+                                      isLiked = !isLiked;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.thumb_down, size: 28),
+                                  color: isThumbDown
+                                      ? primaryForegroundColor
+                                      : Colors.grey,
+                                ),
+                                Text(
+                                    widget.model?.dislike.toString() ??
+                                        widget.jModel!.dislike.toString(),
+                                    style: TextStyle(
+                                        color: isThumbDown
+                                            ? primaryForegroundColor
+                                            : greyColor,
+                                        fontSize: 18))
+                              ],
+                            )
+                          : const SizedBox()
+                ],
+              )
             ],
           ),
         ),

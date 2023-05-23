@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:healthhero/src/controller/auth_controller.dart';
@@ -13,6 +14,32 @@ class LoginController extends GetxController {
   void onClose() {
     AuthController().dispose();
     LoginController().dispose();
+  }
+
+  late RxString selectedDate = ''.obs;
+
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (pickedDate != null && pickedDate != selectedDate) {
+      selectedDate.value = pickedDate.toIso8601String();
+    }
+  }
+
+  RxString selectedUser = 'Patient'.obs;
+  List<String> users = ['Patient', 'Doctor'];
+
+  updateSelectedUser(String newVal) {
+    selectedUser.value = newVal;
+  }
+
+  bool allOk() {
+    return selectedDate.value != '';
   }
 
   void login() async {
@@ -33,21 +60,24 @@ class LoginController extends GetxController {
               googleSignInAccount.displayName,
               googleSignInAccount.email,
               googleSignInAccount.photoUrl,
-              value.user!.uid));
+              value.user!.uid,
+              googleSignInAccount.email.contains('@gmail.com')
+                  ? "patient"
+                  : "doctor",
+              selectedDate.value));
 
       if (kDebugMode) {
         print(oAuthCredential);
         print(credential);
         print(googleSignInAccount);
       }
-
       CustomCircleLoading.cancelDialog();
     }
   }
 }
 
-saveUserInformationToFirebaseAndLocally(
-    String? name, String email, String? photourl, String id) {
+saveUserInformationToFirebaseAndLocally(String? name, String email,
+    String? photourl, String id, String role, String dob) {
   FirebaseClass.uploadUserProfileAndSaveLocally(
-      name ?? 'user', photourl ?? '', email, id);
+      name ?? 'user', photourl ?? '', email, id, role, dob);
 }

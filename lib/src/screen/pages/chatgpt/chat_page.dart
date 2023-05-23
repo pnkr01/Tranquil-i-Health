@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:healthhero/src/constants/global.dart';
+import 'package:healthhero/src/screen/helper/firebase_helper.dart';
 import 'package:healthhero/src/screen/pages/chatgpt/pallate.dart';
 import 'package:healthhero/src/theme/app_color.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
@@ -32,6 +33,18 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
     super.initState();
     initSpeechToText();
     initTextToSpeech();
+    getApi();
+  }
+
+  String sessionID =
+      "Wwgnq8ID5Lmg-p4Par5YUhrmFY6HL_u0N1cVYErV1Qfjytm7cMZip_Pr1spPKhslw89Oqw.";
+
+  Future<void> getApi() async {
+    return firestore.collection('api').doc('bard').get().then((value) {
+      setState(() {
+        sessionID = value["id"];
+      });
+    });
   }
 
   Future<void> initTextToSpeech() async {
@@ -79,7 +92,6 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
       appBar: AppBar(
         backgroundColor: primaryColor,
         title: const Text('Bard AI'),
-        // leading: const Icon(Icons.menu),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -180,9 +192,7 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
                       ),
                     ));
             try {
-              final bard = ChatBot(
-                  sessionId:
-                      "Wwgnq8ID5Lmg-p4Par5YUhrmFY6HL_u0N1cVYErV1Qfjytm7cMZip_Pr1spPKhslw89Oqw.");
+              final bard = ChatBot(sessionId: sessionID);
               final speech = await bard.ask(lastWords);
               log(speech.toString());
               final result = speech["content"];

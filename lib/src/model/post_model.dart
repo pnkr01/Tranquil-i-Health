@@ -12,6 +12,10 @@ class PostModel {
   String? ownerurl;
   DateTime? timestamp;
   double? score;
+  String? role;
+  String? category;
+  int? like;
+  int? dislike;
 
   PostModel({
     this.id,
@@ -25,10 +29,14 @@ class PostModel {
     this.ownerurl,
     this.timestamp,
     this.score,
+    this.role,
+    this.category,
+    required this.like,
+    required this.dislike,
   });
   PostModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    postId = json['postId'];
+    postId = json['postid'];
     ownerId = json['ownerId'];
     location = json['location'];
     username = json['username'];
@@ -38,6 +46,10 @@ class PostModel {
     timestamp = (json['timestamp'] as Timestamp).toDate();
     email = json['email'];
     score = json['score'];
+    role = json['role'];
+    like = json['like'];
+    dislike = json['dislike'];
+    category = json['category'];
   }
 
   Map<String, dynamic> toJson() {

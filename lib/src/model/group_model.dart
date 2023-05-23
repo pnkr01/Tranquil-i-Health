@@ -8,7 +8,7 @@ class GroupModel {
 
   factory GroupModel.fromMap(Map<String, dynamic> map) {
     return GroupModel(
-      url: map['img'],
+      url: map['url'],
       title: map['title'],
     );
   }

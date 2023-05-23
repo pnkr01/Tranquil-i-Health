@@ -1,11 +1,13 @@
 import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_social_textfield/controller/social_text_editing_controller.dart';
 import 'package:get/get.dart';
 import 'package:healthhero/src/constants/global.dart';
+import 'package:healthhero/src/screen/pages/home_screen.dart';
 import 'package:healthhero/src/theme/app_color.dart';
 import 'package:healthhero/src/widgets/custom_circular.dart';
 import 'package:http/http.dart' as https;
@@ -37,9 +39,12 @@ class CreatePostController extends GetxController {
         duration.text.isNotEmpty &&
         medicineController.text.isNotEmpty &&
         symptoms.text.isNotEmpty) {
-      //hit server get result
-      CustomCircleLoading.showDialog();
-      hitUserAndGetPoints(symptoms.text, imgUrl);
+      try {
+        hitUserAndGetPoints(symptoms.text, imgUrl);
+      } catch (e) {
+        CustomCircleLoading.cancelDialog();
+        showSnackBar(e.toString(), primaryColor, whiteColor);
+      }
     }
   }
 
@@ -65,50 +70,117 @@ class CreatePostController extends GetxController {
     if (request.statusCode == 200) {
       var decode = jsonDecode(request.body);
       double score = getScore(decode);
-
-      await firestore.collection(selectedList.value).doc().set({
+      var uuid = const Uuid();
+      final String id =
+          uuid.v5(Uuid.NAMESPACE_URL, DateTime.now().toIso8601String());
+      await firestore.collection(selectedList.value).doc(id).set({
         'userImg': getUserImg,
+        'postid': id,
         'userName': sharedPreferences.getString('name'),
         'timestamp': DateTime.now(),
         'postText':
             '${hospitalNameController.text}**${doctorName.text}**${duration.text}**${medicineController.text}**${symptoms.text}',
         'postimgUrl': imgUrl,
         'email': firebaseAuth.currentUser?.email,
-        'score': score
-      }).then((value) async {
-        firestore.collection('posts').doc().set({
-          'id': firebaseAuth.currentUser?.uid,
-          'username': sharedPreferences.getString('name'),
-          'timestamp': DateTime.now(),
-          'description':
-              '${hospitalNameController.text}**${doctorName.text}**${duration.text}**${medicineController.text}**${symptoms.text}',
-          'mediaUrl': imgUrl,
-          'email': firebaseAuth.currentUser?.email,
-          'ownerurl': firebaseAuth.currentUser?.photoURL,
-          'score': score
-        }).then((value) {
-          firestore
-              .collection('user')
-              .doc(firebaseAuth.currentUser?.email)
-              .collection("posts")
-              .doc()
-              .set({
-            'id': firebaseAuth.currentUser?.uid,
-            'username': sharedPreferences.getString('name'),
-            'timestamp': DateTime.now(),
-            'description':
-                '${hospitalNameController.text}**${doctorName.text}**${duration.text}**${medicineController.text}**${symptoms.text}',
-            'mediaUrl': imgUrl,
-            'email': firebaseAuth.currentUser?.email,
-            'ownerurl': firebaseAuth.currentUser?.photoURL,
-            'score': score
-          });
-        });
-        CustomCircleLoading.cancelDialog();
-        Get.back();
-        Get.back();
-        showSnackBar("Your post is live", primaryColor, whiteColor);
+        'score': score,
+        "role": sharedPreferences.getString('role'),
+        'like': 0,
+        'dislike': 0,
+        'category': selectedList.value
       });
+      await firestore.collection('posts').doc(id).set({
+        'postid': id,
+        'username': sharedPreferences.getString('name'),
+        'timestamp': DateTime.now(),
+        'description':
+            '${hospitalNameController.text}**${doctorName.text}**${duration.text}**${medicineController.text}**${symptoms.text}',
+        'mediaUrl': imgUrl,
+        'email': firebaseAuth.currentUser?.email,
+        'ownerurl': firebaseAuth.currentUser?.photoURL,
+        'score': score,
+        "role": sharedPreferences.getString('role'),
+        'like': 0,
+        'dislike': 0,
+        'category': selectedList.value
+      });
+      await firestore
+          .collection('user')
+          .doc(sharedPreferences.getString('email'))
+          .collection("posts")
+          .doc(id)
+          .set({
+        'postid': id,
+        'username': sharedPreferences.getString('name'),
+        'timestamp': DateTime.now(),
+        'description':
+            '${hospitalNameController.text}**${doctorName.text}**${duration.text}**${medicineController.text}**${symptoms.text}',
+        'mediaUrl': imgUrl,
+        'email': firebaseAuth.currentUser?.email,
+        'ownerurl': firebaseAuth.currentUser?.photoURL,
+        'score': score,
+        "role": sharedPreferences.getString('role'),
+        'like': 0,
+        'dislike': 0,
+        'category': selectedList.value
+      });
+      if (score > 0) {
+        print('score>0');
+        await firestore
+            .collection('hospital')
+            .doc(hospitalNameController.text)
+            .get()
+            .then((value) async {
+          if (value.exists) {
+            await firestore
+                .collection('hospital')
+                .doc(hospitalNameController.text)
+                .update({
+              "score": FieldValue.increment(score),
+              "scount": FieldValue.increment(1),
+            });
+          } else {
+            firestore
+                .collection('hospital')
+                .doc(hospitalNameController.text)
+                .set({
+              "score": score,
+              "scount": 1,
+              "dscore": 0,
+              "dcount": 0,
+            });
+          }
+        });
+      } else {
+        print('score<0');
+        await firestore
+            .collection('hospital')
+            .doc(hospitalNameController.text)
+            .get()
+            .then((value) async {
+          if (value.exists) {
+            await firestore
+                .collection('hospital')
+                .doc(hospitalNameController.text)
+                .update({
+              "dscore": FieldValue.increment(score),
+              "dcount": FieldValue.increment(1),
+            });
+          } else {
+            firestore
+                .collection('hospital')
+                .doc(hospitalNameController.text)
+                .set({
+              "score": 0,
+              "scount": 0,
+              "dscore": score,
+              "dcount": 1,
+            });
+          }
+        });
+      }
+      CustomCircleLoading.cancelDialog();
+      Get.offAll(() => const HomePage());
+      showSnackBar("Your post is live", primaryColor, whiteColor);
     }
   }
 
