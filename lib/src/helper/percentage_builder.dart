@@ -10,16 +10,18 @@ class PercentageContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      height: 200,
-      color: Colors.grey, // Default color if no percentage is provided
+      width: 80,
+      height: 300,
+      color:
+          const Color(0xffc4c4c4), // Default color if no percentage is provided
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          final filledWidth = constraints.maxWidth * (percentage / 100);
+          final filledWidth = constraints.maxHeight * (percentage / 300);
           return Stack(
             children: [
               Container(
-                width: filledWidth,
+                height: filledWidth,
+                width: 80,
                 color: color,
               ),
             ],

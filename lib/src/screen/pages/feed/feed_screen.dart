@@ -10,6 +10,7 @@ import '../../../model/post_model.dart';
 import '../../../utils/circle_shimmer.dart';
 import '../../../utils/circular_progress.dart';
 import '../../helper/firebase_helper.dart';
+import '../../hospital/custom_hospital_rating.dart';
 import '../activities/activity_screen.dart';
 import 'components/group_screen_view.dart';
 import 'design/group_design.dart';
@@ -128,9 +129,20 @@ class FeedsScreen extends GetView<FeedController> {
                             PostModel posts =
                                 PostModel.fromJson(docs[index].data());
                             printMe(posts, index);
-                            return Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: DesignPost(model: posts),
+                            return GestureDetector(
+                              onTap: () {
+                                //print(posts.description!.split('**')[0]);
+                                Get.to(() => CustomHospitalRankingScreen(
+                                      appbarText:
+                                          posts.description!.split('**')[0],
+                                      hospitalName:
+                                          posts.description!.split('**')[0],
+                                    ));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: DesignPost(model: posts),
+                              ),
                             );
                           },
                         );

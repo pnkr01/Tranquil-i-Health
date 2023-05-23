@@ -39,21 +39,32 @@ class _CustomHospitalRankingScreenState
         .doc(widget.hospitalName)
         .get()
         .then((value) {
-      count = value["count"];
-      score = value["score"];
-      dscore = value["dscore"];
-      dcount = value["dcount"];
-      calculateAvg(score, count, dcount, dscore);
+      if (value.exists) {
+        count = value["scount"];
+        score = value["score"];
+        dscore = value["dscore"];
+        dcount = value["dcount"];
+        calculateAvg(score, count, dcount, dscore);
+      } else {
+        setState(() {
+          isEmpty = true;
+        });
+      }
     });
   }
 
   calculateAvg(num score, num count, num dcount, num dscore) {
     gavg = score / count;
     bavg = dscore / dcount;
-    isLoading = !isLoading;
+    print(gavg);
+    print(bavg);
+    setState(() {
+      isLoading = !isLoading;
+    });
   }
 
   bool isLoading = true;
+  bool isEmpty = false;
 
   @override
   Widget build(BuildContext context) {
@@ -63,33 +74,88 @@ class _CustomHospitalRankingScreenState
         title: Text(widget.appbarText),
       ),
       body: !isLoading
-          ? Column(
-              children: [
-                PercentageContainer(
-                  percentage: gavg,
-                  color: Colors.amber,
+          ? Padding(
+              padding: const EdgeInsets.only(left: 50, right: 50),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 28,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(25),
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                          color: greenColor,
+                          borderRadius: BorderRadius.all(Radius.circular(12))),
+                      child: Center(
+                        child: Text(
+                          '${widget.hospitalName} analysis score board',
+                          style: const TextStyle(
+                              color: whiteColor,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 28,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        PercentageContainer(
+                          percentage: gavg * 300,
+                          color: Colors.green,
+                        ),
+                        PercentageContainer(
+                          percentage: -(bavg) * 300,
+                          color: Colors.red,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                            'Good is ${(gavg * 100).toString().substring(0, 5)} %'),
+                        Text(
+                            'Bad is ${(-(bavg) * 100).toString().substring(0, 5)} %'),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      padding: const EdgeInsets.all(25),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: gavg >= -(bavg) ? greenColor : redColor,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12))),
+                      child: Center(
+                        child: Text(
+                          'System recommendation is ${gavg >= -(bavg) ? 'Good' : 'Bad'} ',
+                          style: const TextStyle(
+                              color: whiteColor,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text('Good %'),
-                PercentageContainer(
-                  percentage: bavg,
-                  color: Colors.amber,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text('Bad %'),
-                const SizedBox(
-                  height: 40,
-                ),
-                const Text('System recommendation is '),
-              ],
+              ),
             )
-          : const Center(
-              child: CircularProgressIndicator(color: primaryColor),
-            ),
+          : isEmpty
+              ? const Center(
+                  child: Text(
+                    "No Data availabe now",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                )
+              : const Center(
+                  child: CircularProgressIndicator(color: primaryColor),
+                ),
     );
   }
 }
