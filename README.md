@@ -131,10 +131,12 @@ samples, guidance on mobile development, and a full API reference.
   <img src="https://user-images.githubusercontent.com/83778936/229781509-e28e3ad0-a68a-443c-b533-abb1a5883b2b.png" width="250"/>
   <img src="https://user-images.githubusercontent.com/83778936/229781533-1bc35e54-f016-4259-b437-0892551c9cc0.png" width="250"/>
   <img src=" https://user-images.githubusercontent.com/83778936/229793010-2851d315-2181-404c-8caf-e474a364acbb.png" width="250"/>
- 
-                 
-
-
+    
+  <p float="left">
+   <img src="https://github.com/pnkr01/Tranquil-i-Health/assets/83778936/e1f9ae62-96c7-4b9b-8bef-00f533c8b2c9" width="250"/>
+   <img src="https://github.com/pnkr01/Tranquil-i-Health/assets/83778936/808a777e-c6d5-448b-996a-36fa1a910969" width="250"/>
+   <img src="https://github.com/pnkr01/Tranquil-i-Health/assets/83778936/ba3a3174-4e6e-4918-8718-ccd840db8c0e" width="250"/>
+   <img src="https://github.com/pnkr01/Tranquil-i-Health/assets/83778936/4b521776-88c0-4521-b9da-2095c8446538" width="250"/>
 </div>
 
 ### View Demo
