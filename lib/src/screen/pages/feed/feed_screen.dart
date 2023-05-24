@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healthhero/src/constants/constant_literals.dart';
 import 'package:healthhero/src/constants/global.dart';
+import 'package:healthhero/src/screen/hospital/custom_hospital_rating.dart';
 import 'package:healthhero/src/screen/pages/controller/feed_controller.dart';
 import 'package:healthhero/src/screen/pages/feed/design/post_design.dart';
 import 'package:healthhero/src/theme/app_color.dart';
@@ -10,7 +11,6 @@ import '../../../model/post_model.dart';
 import '../../../utils/circle_shimmer.dart';
 import '../../../utils/circular_progress.dart';
 import '../../helper/firebase_helper.dart';
-import '../../hospital/custom_hospital_rating.dart';
 import '../activities/activity_screen.dart';
 import 'components/group_screen_view.dart';
 import 'design/group_design.dart';
@@ -54,7 +54,7 @@ class FeedsScreen extends GetView<FeedController> {
                 height: 140,
                 width: double.infinity,
                 child: FutureBuilder(
-                    future: groupRef.get(),
+                    future: groupsRef.get(),
                     builder: ((context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                         var snap = snapshot.data;
@@ -128,15 +128,18 @@ class FeedsScreen extends GetView<FeedController> {
                           itemBuilder: (context, index) {
                             PostModel posts =
                                 PostModel.fromJson(docs[index].data());
+
                             printMe(posts, index);
                             return GestureDetector(
                               onTap: () {
-                                //print(posts.description!.split('**')[0]);
+                                // print(posts.description?.split('**')[0].trim());
                                 Get.to(() => CustomHospitalRankingScreen(
-                                      appbarText:
-                                          posts.description!.split('**')[0],
-                                      hospitalName:
-                                          posts.description!.split('**')[0],
+                                      appbarText: posts.description!
+                                          .split('**')[0]
+                                          .trim(),
+                                      hospitalName: posts.description!
+                                          .split('**')[0]
+                                          .trim(),
                                     ));
                               },
                               child: Padding(

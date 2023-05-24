@@ -28,7 +28,7 @@ class JoinedGroup {
 
   factory JoinedGroup.fromJson(Map<String, dynamic> map) {
     return JoinedGroup(
-      postText: map['postText'] ?? '',
+      postText: map['description'] ?? '',
       postimgUrl: map['postimgUrl'] ?? '',
       timestamp: (map['timestamp']).toDate(),
       userName: map['userName'] ?? '',

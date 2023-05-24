@@ -146,7 +146,7 @@ class CreatePostController extends GetxController {
               "score": score,
               "scount": 1,
               "dscore": 0,
-              "dcount": 0,
+              "dcount": 1,
             });
           }
         });
@@ -154,7 +154,7 @@ class CreatePostController extends GetxController {
         print('score<0');
         await firestore
             .collection('hospital')
-            .doc(hospitalNameController.text)
+            .doc(hospitalNameController.text.trim())
             .get()
             .then((value) async {
           if (value.exists) {
@@ -171,7 +171,7 @@ class CreatePostController extends GetxController {
                 .doc(hospitalNameController.text)
                 .set({
               "score": 0,
-              "scount": 0,
+              "scount": 1,
               "dscore": score,
               "dcount": 1,
             });

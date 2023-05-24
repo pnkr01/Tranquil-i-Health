@@ -19,9 +19,14 @@ class HandleOnBoarding extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 80,
-              width: 200,
-              child: Text('Tranquil-i-\nHealth'),
+              child: Text(
+                'Tranquil-i-Health',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
             ),
           ],
         ),

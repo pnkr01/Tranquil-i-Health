@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:healthhero/src/screen/auth/authentication_page.dart';
+import 'package:healthhero/src/screen/helper/firebase_helper.dart';
 import 'package:healthhero/src/screen/pages/profile/components/widgets/my_post.dart';
 import 'package:healthhero/src/screen/pages/profile/controller/profile_controller.dart';
+import 'package:healthhero/src/service/local_storage.dart';
 import 'package:healthhero/src/theme/app_color.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -84,83 +87,83 @@ class ProfileScreen extends GetView<ProfileController> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Card(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 10, bottom: 10),
-                      width: double.infinity,
-                      child: Text(
-                        'Your Reach',
-                        style: kProfileTextStyle(),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Card(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 10, bottom: 10),
-                      width: double.infinity,
-                      child: Text(
-                        'Your Score',
-                        style: kProfileTextStyle(),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Card(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 10, bottom: 10),
-                      width: double.infinity,
-                      child: Text(
-                        'Your Data',
-                        style: kProfileTextStyle(),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Card(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 10, bottom: 10),
-                      width: double.infinity,
-                      child: Text(
-                        'Privacy',
-                        style: kProfileTextStyle(),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Card(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 10, bottom: 10),
-                      width: double.infinity,
-                      child: Text(
-                        'Data Sharing',
-                        style: kProfileTextStyle(),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Card(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 10, bottom: 10),
-                      width: double.infinity,
-                      child: Text(
-                        'Session Management',
-                        style: kProfileTextStyle(),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Card(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 10, bottom: 10),
-                      width: double.infinity,
-                      child: Text(
-                        'Your Security Keys',
-                        style: kProfileTextStyle(),
-                      ),
-                    ),
-                  ),
+                  // const SizedBox(height: 10),
+                  // Card(
+                  //   child: Container(
+                  //     margin: const EdgeInsets.only(left: 10, bottom: 10),
+                  //     width: double.infinity,
+                  //     child: Text(
+                  //       'Your Reach',
+                  //       style: kProfileTextStyle(),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Card(
+                  //   child: Container(
+                  //     margin: const EdgeInsets.only(left: 10, bottom: 10),
+                  //     width: double.infinity,
+                  //     child: Text(
+                  //       'Your Score',
+                  //       style: kProfileTextStyle(),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Card(
+                  //   child: Container(
+                  //     margin: const EdgeInsets.only(left: 10, bottom: 10),
+                  //     width: double.infinity,
+                  //     child: Text(
+                  //       'Your Data',
+                  //       style: kProfileTextStyle(),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Card(
+                  //   child: Container(
+                  //     margin: const EdgeInsets.only(left: 10, bottom: 10),
+                  //     width: double.infinity,
+                  //     child: Text(
+                  //       'Privacy',
+                  //       style: kProfileTextStyle(),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Card(
+                  //   child: Container(
+                  //     margin: const EdgeInsets.only(left: 10, bottom: 10),
+                  //     width: double.infinity,
+                  //     child: Text(
+                  //       'Data Sharing',
+                  //       style: kProfileTextStyle(),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Card(
+                  //   child: Container(
+                  //     margin: const EdgeInsets.only(left: 10, bottom: 10),
+                  //     width: double.infinity,
+                  //     child: Text(
+                  //       'Session Management',
+                  //       style: kProfileTextStyle(),
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Card(
+                  //   child: Container(
+                  //     margin: const EdgeInsets.only(left: 10, bottom: 10),
+                  //     width: double.infinity,
+                  //     child: Text(
+                  //       'Your Security Keys',
+                  //       style: kProfileTextStyle(),
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(height: 10),
                   Center(
                     child: SizedBox(
@@ -169,7 +172,12 @@ class ProfileScreen extends GetView<ProfileController> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             backgroundColor: primaryColor),
-                        onPressed: () {},
+                        onPressed: () {
+                          firebaseAuth.signOut().then((value) {
+                            LocalStorage.clearDB();
+                            Get.offAll(() => const AuthenticationPage());
+                          });
+                        },
                         child: const Text('Logout'),
                       ),
                     ),

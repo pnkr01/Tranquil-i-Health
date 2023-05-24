@@ -8,4 +8,8 @@ class LocalStorage {
     sharedPreferences.setString('email', email);
     sharedPreferences.setString('role', role);
   }
+
+  static void clearDB() {
+    sharedPreferences.clear();
+  }
 }

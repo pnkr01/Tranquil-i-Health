@@ -29,26 +29,30 @@ class _GroupTileState extends State<GroupTile> {
             groupName: widget.groupName,
             userName: widget.userName));
       },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-        child: ListTile(
-          leading: CircleAvatar(
-            radius: 30,
-            backgroundColor: primaryForegroundColor,
-            child: Text(
-              widget.groupName.substring(0, 1).toUpperCase(),
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.w500),
+      child: Card(
+        margin: const EdgeInsets.all(5),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+          child: ListTile(
+            //  trailing: const Icon(Icons.info, color: primaryColor),
+            leading: CircleAvatar(
+              radius: 30,
+              backgroundColor: primaryForegroundColor,
+              child: Text(
+                widget.groupName.substring(0, 1).toUpperCase(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.w500),
+              ),
             ),
-          ),
-          title: Text(
-            widget.groupName,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(
-            "Talk as ${widget.userName}",
-            style: const TextStyle(fontSize: 13),
+            title: Text(
+              widget.groupName,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+              "Talk as ${widget.userName}",
+              style: const TextStyle(fontSize: 13),
+            ),
           ),
         ),
       ),

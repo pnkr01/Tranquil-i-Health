@@ -252,9 +252,7 @@ class _DesignPostState extends State<DesignPost> {
                   ),
                 ),
               GestureDetector(
-                onTap: () {
-                  
-                },
+                onTap: () {},
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20.0, 0, 10, 0),
                   child: widget.model != null
@@ -326,8 +324,8 @@ class _DesignPostState extends State<DesignPost> {
                                         child: widget.jModel!.score > 0
                                             ? const Text(
                                                 'Positive',
-                                                style:
-                                                    TextStyle(color: whiteColor),
+                                                style: TextStyle(
+                                                    color: whiteColor),
                                               )
                                             : const Text('Critical Post'),
                                       )
@@ -337,8 +335,9 @@ class _DesignPostState extends State<DesignPost> {
                       : ExpandableText(
                           animationCurve: Curves.easeIn,
                           widget.jModel?.role == "patient"
-                              ? 'My Hospital is : ${widget.model?.description?.split('**')[0]}\n\nDoctor is : ${widget.model?.description?.split('**')[1]}\n\nDuration is : ${widget.model?.description?.split('**')[2]}\n\nSymtoms is : ${widget.model?.description?.split('**')[4]}'
-                              : 'My Hospital is : ${widget.model?.description?.split('**')[0]}\n\nDoctor is : ${widget.model?.description?.split('**')[1]}\n\nDuration is : ${widget.model?.description?.split('**')[2]}\n\nMedicine Taken is : ${widget.model?.description?.split('**')[3]}\n\nSymtoms is : ${widget.model?.description?.split('**')[4]}',
+                              ? 'My Hospital is : ${widget.jModel?.postText.split('**')[0]}\n\nDoctor is : ${widget.jModel?.postText.split('**')[1]}\n\nDuration is : ${widget.jModel?.postText.split('**')[2]}\n\nSymtoms is : ${widget.jModel?.postText.split('**')[4]}'
+                              : 'My Hospital is : ${widget.jModel?.postText.split('**')[0]}\n\nDoctor is : ${widget.jModel?.postText.split('**')[1]}\n\nDuration is : ${widget.jModel?.postText.split('**')[2]}\n\nSymtoms is : ${widget.jModel?.postText.split('**')[4]}',
+                          //: 'My Hospital is : ${widget.model?.description?.split('**')[0]}\n\nDoctor is : ${widget.model?.description?.split('**')[1]}\n\nDuration is : ${widget.model?.description?.split('**')[2]}\n\nMedicine Taken is : ${widget.model?.description?.split('**')[3]}\n\nSymtoms is : ${widget.model?.description?.split('**')[4]}',
                           expandText: 'show more',
                           style: kBodyTextSubtitleStyle()
                               .copyWith(color: blackColor),

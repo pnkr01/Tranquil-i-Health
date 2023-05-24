@@ -41,9 +41,7 @@ class _ChatScreenPageState extends State<ChatScreenPage> {
 
   Future<void> getApi() async {
     return firestore.collection('api').doc('bard').get().then((value) {
-      setState(() {
-        sessionID = value["id"];
-      });
+      sessionID = value["id"];
     });
   }
 

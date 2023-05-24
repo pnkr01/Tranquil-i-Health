@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healthhero/src/constants/constant_literals.dart';
 import 'package:healthhero/src/constants/global.dart';
-import 'package:healthhero/src/model/joined_group_model.dart';
+import 'package:healthhero/src/model/post_model.dart';
+import 'package:healthhero/src/screen/hospital/custom_hospital_rating.dart';
 import 'package:healthhero/src/screen/pages/feed/controller/joined_group_controller.dart';
 import 'package:healthhero/src/theme/app_color.dart';
 import 'package:healthhero/src/utils/circular_progress.dart';
@@ -39,7 +40,7 @@ class GroupScreenView extends GetView<JoinedGroupController> {
               child: RefreshIndicator(
                 color: blueColor,
                 onRefresh: () {
-                  printMe('refreshing', 'group_screen.dart');
+                  printMe('refreshing', 'feed_screen.dart');
                   return postRef
                       .orderBy('timestamp', descending: true)
                       .limit(controller.page.value)
@@ -55,28 +56,42 @@ class GroupScreenView extends GetView<JoinedGroupController> {
                       topRight: Radius.circular(20),
                     ),
                   ),
-                  child: FutureBuilder(
-                    future: FirebaseFirestore.instance
-                        .collection(route)
+                  child: StreamBuilder(
+                    stream: postRef
                         .orderBy('timestamp', descending: true)
                         .limit(controller.page.value)
-                        .get(),
+                        .snapshots(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
                         var snap = snapshot.data;
                         List docs = snap!.docs;
-                        printMe(snap, docs);
                         return ListView.builder(
                           controller: controller.scrollController,
                           itemCount: docs.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            JoinedGroup joinedGroup =
-                                JoinedGroup.fromJson(docs[index].data());
-                            printMe(joinedGroup, index);
-                            return Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: DesignPost(jModel: joinedGroup),
+                            PostModel posts =
+                                PostModel.fromJson(docs[index].data());
+
+                            printMe(posts, index);
+                            return GestureDetector(
+                              onTap: () {
+                                // print(posts.description?.split('**')[0].trim());
+                                Get.to(() => CustomHospitalRankingScreen(
+                                      appbarText: posts.description!
+                                          .split('**')[0]
+                                          .trim(),
+                                      hospitalName: posts.description!
+                                          .split('**')[0]
+                                          .trim(),
+                                    ));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: posts.category == route
+                                    ? DesignPost(model: posts)
+                                    : const SizedBox(),
+                              ),
                             );
                           },
                         );

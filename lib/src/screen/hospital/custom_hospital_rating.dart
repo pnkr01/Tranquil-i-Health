@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-
 import 'package:healthhero/src/helper/percentage_builder.dart';
+
 import 'package:healthhero/src/screen/helper/firebase_helper.dart';
 import 'package:healthhero/src/theme/app_color.dart';
 
 class CustomHospitalRankingScreen extends StatefulWidget {
   const CustomHospitalRankingScreen({
     Key? key,
-    required this.appbarText,
-    required this.hospitalName,
+    this.appbarText,
+    this.hospitalName,
   }) : super(key: key);
-  final String appbarText;
-  final String hospitalName;
+  final String? appbarText;
+  final String? hospitalName;
 
   @override
   State<CustomHospitalRankingScreen> createState() =>
@@ -32,6 +32,8 @@ class _CustomHospitalRankingScreenState
   late final dcount;
   late final gavg;
   late final bavg;
+  late final num bpercent;
+  late final num spercent;
 
   getAvgValue() async {
     firestore
@@ -44,6 +46,11 @@ class _CustomHospitalRankingScreenState
         score = value["score"];
         dscore = value["dscore"];
         dcount = value["dcount"];
+        print('count is $count');
+        print('scount is $score');
+        print('dscore is $dscore');
+        print('dcount is $dcount');
+        print(widget.hospitalName);
         calculateAvg(score, count, dcount, dscore);
       } else {
         setState(() {
@@ -56,8 +63,10 @@ class _CustomHospitalRankingScreenState
   calculateAvg(num score, num count, num dcount, num dscore) {
     gavg = score / count;
     bavg = dscore / dcount;
-    print(gavg);
-    print(bavg);
+    bpercent = -(bavg) * 100;
+    spercent = gavg * 100;
+    print('bavg is $bavg');
+    print('gavg is $gavg');
     setState(() {
       isLoading = !isLoading;
     });
@@ -71,7 +80,7 @@ class _CustomHospitalRankingScreenState
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
-        title: Text(widget.appbarText),
+        title: Text(widget.appbarText ?? ""),
       ),
       body: !isLoading
           ? Padding(
@@ -118,10 +127,8 @@ class _CustomHospitalRankingScreenState
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                            'Good is ${(gavg * 100).toString().substring(0, 5)} %'),
-                        Text(
-                            'Bad is ${(-(bavg) * 100).toString().substring(0, 5)} %'),
+                        Text('Good is ${spercent.toStringAsFixed(2)} %'),
+                        Text('Bad is ${bpercent.toStringAsFixed(2)} %'),
                       ],
                     ),
                     const SizedBox(height: 20),
